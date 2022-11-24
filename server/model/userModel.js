@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 
-const userSchema = new mongoose.Schema({
+const { Schema } = mongoose;
+const userSchema = new Schema({
+    _id: Schema.Types.ObjectId,
     firstName: {
         type: String,
         required: true,
@@ -25,7 +27,11 @@ const userSchema = new mongoose.Schema({
         type: Object,
         required: true,
         unique: false,
-    }
+    },
+    posts: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Post'
+    }]
 });
 const User = mongoose.model('User', userSchema);
 export default User

@@ -1,0 +1,86 @@
+/* General */
+
+
+/* Logo */
+
+.logoImg {
+    height: 150px;
+    pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .logoImg {
+        animation: logoImg-spin infinite 5s linear;
+    }
+}
+
+.logoDiv {
+    background-color: #282c34;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+}
+
+@keyframes logoImg-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* NavBar */
+
+.logoNav{
+    width: 40px;
+}
+
+/* Home */
+
+.homePic{
+    width: 100%;
+}
+
+/* Forms */
+
+.containerDiv {
+    background-color: bisque;
+    border: 2px solid black;
+    border-radius: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media screen and (min-width: 1000px) {
+    div.containerDiv {
+        max-width: 40%;
+    }
+}
+
+@media (max-width: 1000px) and (min-width: 800px) {
+    div.containerDiv {
+        max-width: 60%;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    div.containerDiv {
+        max-width: 80%;
+    }
+}
+
+/* Fab */
+
+.fab{
+    margin: 0px;
+    top: auto;
+    right: 20px;
+    bottom: 20px;
+    left: auto;
+    position: fixed;
+}

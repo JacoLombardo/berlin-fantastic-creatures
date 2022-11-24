@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
-const commentSchema = new Schema({
+const postSchema = new Schema({
     _id: Schema.Types.ObjectId,
     author: {
         type: Schema.Types.ObjectId,
@@ -37,10 +37,11 @@ const commentSchema = new Schema({
             unique: false
         }
     },
-    post: {
+    comments: [{
         type: Schema.Types.ObjectId,
-        ref: 'Post'
-    }
+        ref: 'Comment'
+    }]
+    
 });
-const Comment = mongoose.model('Comment', commentSchema);
-export default Comment
+const Post = mongoose.model('Post', postSchema);
+export default Post
