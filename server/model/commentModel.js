@@ -23,9 +23,6 @@ const commentSchema = new Schema({
         unique: false
     },
     meta: {
-        type: Object,
-        required: false,
-        unique: false,
         likes: {
             type: Number,
             required: false,

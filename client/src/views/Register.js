@@ -4,18 +4,60 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
 function Register() {
+
+    const [newUser, setNewUser] = useState({});
+    const [confirmationPassword, setConfirmationPassword] = useState(null);
     
     const [validated, setValidated] = useState(false);
+
+    const handleConfirmationPassword = (event) => {
+        setConfirmationPassword(event.target.value);
+    }
     
     const handleSubmit = (event) => {
-        console.log(event)
+        event.preventDefault();
+        console.log(event);
+        // if (newUser.password !== confirmationPassword) {
+        //     console.log(event.currentTarget)
+        // }
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
             event.preventDefault();
             event.stopPropagation();
         }
         setValidated(true);
+        console.log(newUser);
+
+        register();
     };
+
+    const register = async () => {
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+        
+        const urlencoded = new URLSearchParams();
+        urlencoded.append("username", newUser.username);
+        urlencoded.append("firstName", newUser.firstName);
+        urlencoded.append("lastName", newUser.lastName);
+        urlencoded.append("email", newUser.email);
+        urlencoded.append("password", newUser.password);
+        urlencoded.append("profilePic", newUser.profilePic ? newUser.profilePic : "");
+        
+        var requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: urlencoded,
+            redirect: "follow",
+        };
+        
+        const response = await fetch("http://localhost:5000/register", requestOptions);
+        const result = await response.json();
+        console.log("result:", result);
+    }
+
+    const handleChangeHandler = (event) => {
+        setNewUser({ ...newUser, [event.target.name]: event.target.value });
+  };
 
   return (
       <>
@@ -23,55 +65,60 @@ function Register() {
           <br />
           <div className="containerDiv">
               <br />
-              <h1 style={{textAlign: "center"}}>Register</h1>
+              <h1 style={{ textAlign: "center" }}>Register</h1>
+              
               <Form noValidate validated={validated} onSubmit={handleSubmit} style={{padding: "20px"}}>
-                  <Form.Group className="mb-3" controlId="formBasicUsername">
-                      <Form.Label>Username</Form.Label>
-                      <Form.Control type="username" placeholder="Enter username" required />
-                      <Form.Control.Feedback type="invalid">
-                          Username already in use.
-                      </Form.Control.Feedback>
-                  </Form.Group>
-                  <Form.Group className="mb-3" controlId="formBasicFirstName">
-                      <Form.Label>First Name</Form.Label>
-                      <Form.Control type="text" placeholder="Enter first name" required />
-                  </Form.Group>
-                  <Form.Group className="mb-3" controlId="formBasicLastName">
-                      <Form.Label>Last Name</Form.Label>
-                      <Form.Control type="text" placeholder="Enter last name" required />
-                  </Form.Group>
-                  <Form.Group className="mb-3" controlId="formBasicEmail">
-                      <Form.Label>Email</Form.Label>
-                      <Form.Control type="email" placeholder="Enter email" required />
-                      <Form.Control.Feedback type="invalid">
-                          Email already in use.
-                      </Form.Control.Feedback>
-                      <Form.Control.Feedback type="invalid">
-                          Invalid email format.
-                      </Form.Control.Feedback>
-                  </Form.Group>
-                  <Form.Group className="mb-3" controlId="formBasicPassword">
-                      <Form.Label>Password</Form.Label>
-                      <Form.Control type="password" placeholder="Enter password" required />
-                      <Form.Control.Feedback type="invalid">
-                          Invalid password format.
-                      </Form.Control.Feedback>
-                  </Form.Group>
-                  <Form.Group className="mb-3" controlId="formBasicPasswordConfirmation">
-                      <Form.Label>Password confirmation</Form.Label>
-                      <Form.Control type="password" placeholder="Confirm password" required />
-                      <Form.Control.Feedback type="invalid">
-                          The passwords don't match.
-                      </Form.Control.Feedback>
-                  </Form.Group>
-                  <Form.Group className="mb-3" controlId="formBasicFile">
-                      <Form.Label>Profile picture (optional)</Form.Label>
-                      <Form.Control type="file" />
-                  </Form.Group>
+                  <div className="formFlex">
+                      <Form.Group className="mb-3" controlId="formBasicUsername">
+                          <Form.Label>Username</Form.Label>
+                          <Form.Control type="text" placeholder="Enter username" name="username" value={newUser.username ? newUser.username : ""} onChange={handleChangeHandler} required />
+                          <Form.Control.Feedback type="invalid">
+                              Username already in use.
+                          </Form.Control.Feedback>
+                      </Form.Group>
+                      <Form.Group className="mb-3" controlId="formBasicFirstName">
+                          <Form.Label>First Name</Form.Label>
+                          <Form.Control type="text" placeholder="Enter first name" name="firstName" value={newUser.firstName ? newUser.firstName : ""} onChange={handleChangeHandler} required />
+                      </Form.Group>
+                      <Form.Group className="mb-3" controlId="formBasicLastName">
+                          <Form.Label>Last Name</Form.Label>
+                          <Form.Control type="text" placeholder="Enter last name" name="lastName" value={newUser.lastName ? newUser.lastName : ""} onChange={handleChangeHandler} required />
+                      </Form.Group>
+                      <Form.Group className="mb-3" controlId="formBasicEmail">
+                          <Form.Label>Email</Form.Label>
+                          <Form.Control type="email" placeholder="Enter email" name="email" value={newUser.email ? newUser.email : ""} onChange={handleChangeHandler} required />
+                          <Form.Control.Feedback type="invalid">
+                              Email already in use.
+                          </Form.Control.Feedback>
+                          <Form.Control.Feedback type="invalid">
+                              Invalid email format.
+                          </Form.Control.Feedback>
+                      </Form.Group>
+                      <Form.Group className="mb-3" controlId="formBasicPassword">
+                          <Form.Label>Password</Form.Label>
+                          <Form.Control type="password" placeholder="Enter password" name="password" value={newUser.password ? newUser.password : ""} onChange={handleChangeHandler} required />
+                          <Form.Control.Feedback type="invalid">
+                              Invalid password format.
+                          </Form.Control.Feedback>
+                      </Form.Group>
+                      <Form.Group className="mb-3" controlId="formBasicPasswordConfirmation">
+                          <Form.Label>Password confirmation</Form.Label>
+                          <Form.Control type="password" placeholder="Confirm password" value={confirmationPassword ? confirmationPassword : ""} onChange={handleConfirmationPassword} required />
+                          <Form.Control.Feedback type="invalid">
+                              The passwords don't match.
+                          </Form.Control.Feedback>
+                      </Form.Group>
+                      <Form.Group className="mb-3" controlId="formBasicFile">
+                          <Form.Label>Profile picture (optional)</Form.Label>
+                          <Form.Control type="file" name="profilePic" value={newUser.profilePic ? newUser.profilePic : ""} onChange={handleChangeHandler} />
+                      </Form.Group>
+                  </div>
                   <Form.Group className="mb-3" controlId="formBasicCheckbox">
                       <Form.Check type="checkbox" label="Check me out" />
                   </Form.Group>
-                  <Button variant="primary" type="submit">Register</Button>
+                  <div className="formButton">
+                    <Button variant="primary" type="submit">Register</Button>
+                  </div>
               </Form>
           </div>
       </>

@@ -56,22 +56,27 @@
     margin-right: auto;
 }
 
-@media screen and (min-width: 1000px) {
+@media screen and (min-width: 800px) {
     div.containerDiv {
-        max-width: 40%;
-    }
-}
-
-@media (max-width: 1000px) and (min-width: 800px) {
-    div.containerDiv {
-        max-width: 60%;
+        max-width: 500px;
     }
 }
 
 @media screen and (max-width: 800px) {
     div.containerDiv {
-        max-width: 80%;
+        max-width: 300px;
     }
+}
+
+.formFlex{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.formButton{
+    display: flex;
+    justify-content: flex-end;
 }
 
 /* Fab */

@@ -24,22 +24,26 @@ function LogIn() {
           <div className="containerDiv">
               <br />
               <h1 style={{textAlign: "center"}}>Log In</h1>
-              <Form noValidate validated={validated} onSubmit={handleSubmit} style={{padding: "20px"}}>
-                  <Form.Group className="mb-3" controlId="formBasicUsername">
-                      <Form.Label>Username</Form.Label>
-                      <Form.Control type="username" placeholder="Enter username" required />
-                      <Form.Control.Feedback type="invalid">
-                          Wrong username.
-                      </Form.Control.Feedback>
-                  </Form.Group>
-                  <Form.Group className="mb-3" controlId="formBasicPassword">
-                      <Form.Label>Password</Form.Label>
-                      <Form.Control type="password" placeholder="Enter password" required />
-                      <Form.Control.Feedback type="invalid">
-                          Wrong password.
-                      </Form.Control.Feedback>
-                  </Form.Group>
-                  <Button variant="primary" type="submit">Log In</Button>
+              <Form noValidate validated={validated} onSubmit={handleSubmit} style={{ padding: "20px" }}>
+                  <div className="formFlex">
+                      <Form.Group className="mb-3" controlId="formBasicUsername">
+                          <Form.Label>Username</Form.Label>
+                          <Form.Control type="username" placeholder="Enter username" required />
+                          <Form.Control.Feedback type="invalid">
+                              Wrong username.
+                          </Form.Control.Feedback>
+                      </Form.Group>
+                      <Form.Group className="mb-3" controlId="formBasicPassword">
+                          <Form.Label>Password</Form.Label>
+                          <Form.Control type="password" placeholder="Enter password" required />
+                          <Form.Control.Feedback type="invalid">
+                              Wrong password.
+                          </Form.Control.Feedback>
+                      </Form.Group>
+                  </div>
+                  <div className="formButton">
+                      <Button variant="primary" type="submit">Log In</Button>
+                  </div>
               </Form>
           </div>
       </>

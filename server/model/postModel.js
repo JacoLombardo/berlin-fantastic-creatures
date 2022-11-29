@@ -14,18 +14,15 @@ const postSchema = new Schema({
     },
     text: {
         type: String,
-        required: true,
+        required: false,
         unique: false
     },
     img: {
-        type: Object,
-        required: false,
+        type: String,
+        required: true,
         unique: false
     },
     meta: {
-        type: Object,
-        required: false,
-        unique: false,
         likes: {
             type: Number,
             required: false,

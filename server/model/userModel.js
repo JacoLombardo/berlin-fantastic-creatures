@@ -2,7 +2,6 @@ import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
 const userSchema = new Schema({
-    _id: Schema.Types.ObjectId,
     firstName: {
         type: String,
         required: true,
@@ -23,9 +22,14 @@ const userSchema = new Schema({
         required: true,
         unique: true,
     },
-    image: {
-        type: Object,
+    password: {
+        type: String,
         required: true,
+        unique: false,
+    },
+    profilePic: {
+        type: String,
+        required: false,
         unique: false,
     },
     posts: [{

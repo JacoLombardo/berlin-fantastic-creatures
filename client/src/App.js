@@ -8,19 +8,22 @@ import Profile from './views/Profile';
 import NoMatch from './views/NoMatch';
 import Ubahn from './views/Ubahn';
 import City from './views/City';
+// import { AuthContextProvider } from './context/AuthContext';
 
 function App() {
   return (
     <div className="App">
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<LogIn />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/city" element={<City />} />
-        <Route path="/ubahn" element={<Ubahn />} />
-        <Route path="*" element={<NoMatch />} />
-      </Routes>
+      {/* <AuthContextProvider> */}
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<LogIn />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/city" element={<City />} />
+          <Route path="/ubahn" element={<Ubahn />} />
+          <Route path="*" element={<NoMatch />} />
+        </Routes>
+      {/* </AuthContextProvider> */}
     </div>
   );
 }
