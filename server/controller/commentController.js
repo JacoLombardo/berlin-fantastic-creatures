@@ -1,4 +1,5 @@
 import Comment from '../model/commentModel.js';
+import { v2 as cloudinary } from 'cloudinary';
 
 const getAllComments = async (req, res) => {
     try {
@@ -10,5 +11,25 @@ const getAllComments = async (req, res) => {
     }
 };
 
+const imageUploadComments = async (req, res) => {
+  try {
+    console.log("req :>> ", req.file);
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      folder: "berlin-fantastic-creatures/comments",
+    });
+    console.log("result >>>>", result);
+    res.status(200).json({
+      msg: "Image successfully uploaded",
+      image: result.url,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      msg: "Error uploading image",
+      error: error,
+    });
+  }
+};
 
-export {getAllComments};
+
+export {getAllComments, imageUploadComments};

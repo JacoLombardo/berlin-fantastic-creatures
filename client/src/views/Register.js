@@ -5,8 +5,11 @@ import Form from 'react-bootstrap/Form';
 
 function Register() {
 
+    // const id = useRef()
+
     const [newUser, setNewUser] = useState({});
     const [confirmationPassword, setConfirmationPassword] = useState(null);
+    const [profileImg, setProfileImg] = useState("");
     
     const [validated, setValidated] = useState(false);
 
@@ -15,11 +18,12 @@ function Register() {
     }
     
     const handleSubmit = (event) => {
+
         event.preventDefault();
-        console.log(event);
-        // if (newUser.password !== confirmationPassword) {
-        //     console.log(event.currentTarget)
-        // }
+
+        if (newUser.password !== confirmationPassword) {
+            console.log(event.currentTarget)
+        }
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
             event.preventDefault();
@@ -28,7 +32,9 @@ function Register() {
         setValidated(true);
         console.log(newUser);
 
-        register();
+        setTimeout(() => {
+            register();
+        }, 4000);
     };
 
     const register = async () => {
@@ -41,7 +47,7 @@ function Register() {
         urlencoded.append("lastName", newUser.lastName);
         urlencoded.append("email", newUser.email);
         urlencoded.append("password", newUser.password);
-        urlencoded.append("profilePic", newUser.profilePic ? newUser.profilePic : "");
+        urlencoded.append("profilePic", profileImg ? profileImg : "");
         
         var requestOptions = {
             method: "POST",
@@ -54,6 +60,22 @@ function Register() {
         const result = await response.json();
         console.log("result:", result);
     }
+
+    const uploadPicture = async (event) => {
+        event.preventDefault();
+        var formdata = new FormData();
+        formdata.append("image", event.target.files[0]);
+
+        const requestOptions = { method: "POST", body: formdata, redirect: "follow" };
+        try {
+            const response = await fetch("http://localhost:5000/users/imageupload", requestOptions);
+            const result = await response.json();
+            console.log("result", result);
+            setProfileImg(result.image);
+        } catch (error) {
+            console.log("error :>> ", error);
+        };
+    };
 
     const handleChangeHandler = (event) => {
         setNewUser({ ...newUser, [event.target.name]: event.target.value });
@@ -78,11 +100,11 @@ function Register() {
                       </Form.Group>
                       <Form.Group className="mb-3" controlId="formBasicFirstName">
                           <Form.Label>First Name</Form.Label>
-                          <Form.Control type="text" placeholder="Enter first name" name="firstName" value={newUser.firstName ? newUser.firstName : ""} onChange={handleChangeHandler} required />
+                          <Form.Control type="text" placeholder="Enter first name" name="firstName" value={newUser.firstName ? newUser.firstName : ""} onChange={handleChangeHandler} />
                       </Form.Group>
                       <Form.Group className="mb-3" controlId="formBasicLastName">
                           <Form.Label>Last Name</Form.Label>
-                          <Form.Control type="text" placeholder="Enter last name" name="lastName" value={newUser.lastName ? newUser.lastName : ""} onChange={handleChangeHandler} required />
+                          <Form.Control type="text" placeholder="Enter last name" name="lastName" value={newUser.lastName ? newUser.lastName : ""} onChange={handleChangeHandler} />
                       </Form.Group>
                       <Form.Group className="mb-3" controlId="formBasicEmail">
                           <Form.Label>Email</Form.Label>
@@ -94,7 +116,7 @@ function Register() {
                               Invalid email format.
                           </Form.Control.Feedback>
                       </Form.Group>
-                      <Form.Group className="mb-3" controlId="formBasicPassword">
+                      <Form.Group className="mb-3" controlId="formBasicPassword" >
                           <Form.Label>Password</Form.Label>
                           <Form.Control type="password" placeholder="Enter password" name="password" value={newUser.password ? newUser.password : ""} onChange={handleChangeHandler} required />
                           <Form.Control.Feedback type="invalid">
@@ -110,7 +132,7 @@ function Register() {
                       </Form.Group>
                       <Form.Group className="mb-3" controlId="formBasicFile">
                           <Form.Label>Profile picture (optional)</Form.Label>
-                          <Form.Control type="file" name="profilePic" value={newUser.profilePic ? newUser.profilePic : ""} onChange={handleChangeHandler} />
+                          <Form.Control type="file" name="profilePic" onChange={uploadPicture} />
                       </Form.Group>
                   </div>
                   <Form.Group className="mb-3" controlId="formBasicCheckbox">
@@ -123,6 +145,6 @@ function Register() {
           </div>
       </>
   )
-}
+};
 
 export default Register

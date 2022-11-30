@@ -1,4 +1,5 @@
 import User from '../model/userModel.js';
+import { v2 as cloudinary } from 'cloudinary';
 import encryptPassword from '../tools/encryptPassword.js';
 
 const getAllUsers = async (req, res) => {
@@ -61,5 +62,25 @@ const registerUser = async (req, res) => {
     }
 };
 
+const imageUploadUser = async (req, res) => {
+  try {
+    console.log("req :>> ", req.file);
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      folder: "berlin-fantastic-creatures/profilePics",
+    });
+    console.log("result >>>>", result);
+    res.status(200).json({
+      msg: "Image successfully uploaded",
+      image: result.url,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      msg: "Error uploading image",
+      error: error,
+    });
+  }
+};
 
-export {getAllUsers, registerUser};
+
+export {getAllUsers, registerUser, imageUploadUser};

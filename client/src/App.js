@@ -4,7 +4,7 @@ import './App.css';
 import Home from './views/Home';
 import LogIn from './views/LogIn';
 import Register from './views/Register';
-import Profile from './views/Profile';
+import PersonalProfile from './views/PersonalProfile';
 import NoMatch from './views/NoMatch';
 import Ubahn from './views/Ubahn';
 import City from './views/City';
@@ -18,7 +18,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<LogIn />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={<PersonalProfile />} />
           <Route path="/city" element={<City />} />
           <Route path="/ubahn" element={<Ubahn />} />
           <Route path="*" element={<NoMatch />} />

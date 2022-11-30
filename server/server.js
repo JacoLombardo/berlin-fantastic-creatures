@@ -6,6 +6,7 @@ import userRoute from './route/userRoute.js'
 import postRoute from './route/postRoute.js'
 import commentRoute from './route/commentRoute.js'
 import * as dotenv from "dotenv";
+import cloudinaryConfig from './config/cloudinary.js';
 // loading .env file
 dotenv.config();
 
@@ -24,6 +25,7 @@ const addMiddleWares = () => {
     credentials: true,
   };
   app.use(cors(corsOptions));
+  cloudinaryConfig();
 };
 
 const startServer = () => {

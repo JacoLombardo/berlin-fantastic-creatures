@@ -1,13 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import CityImage from '../components/City/CityImage';
 import NavBar from '../components/NavBar';
-import CityPic from '../Images/pics/street.jpg';
 
 function City() {
+
+  const [show, setShow] = useState(false);
+
+
+  useEffect(() => {
+    setTimeout(() => {
+      setShow(true)
+    }, 5000);
+  }, [])
+  
   return (
-      <>
-          <NavBar />
-          <img src={CityPic} alt="Street" className="homePic"></img>
-      </>
+    <>
+      <NavBar />
+      {!show && <CityImage />}
+      {show && <p>Here</p>}
+    </>
   )
 }
 

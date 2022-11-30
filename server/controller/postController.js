@@ -1,4 +1,5 @@
 import Post from '../model/postModel.js';
+import { v2 as cloudinary } from 'cloudinary';
 
 const getAllPosts = async (req, res) => {
     try {
@@ -10,5 +11,26 @@ const getAllPosts = async (req, res) => {
     }
 };
 
+const imageUploadPosts = async (req, res) => {
+  try {
+    console.log("req :>> ", req.file);
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      folder: "berlin-fantastic-creatures/posts",
+    });
+    console.log("result >>>>", result);
+    res.status(200).json({
+      msg: "Image successfully uploaded",
+      image: result.url,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      msg: "Error uploading image",
+      error: error,
+    });
+  }
+};
 
-export {getAllPosts};
+
+
+export {getAllPosts, imageUploadPosts};
