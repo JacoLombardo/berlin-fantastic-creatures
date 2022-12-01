@@ -1,20 +1,27 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import NavBar from '../components/NavBar';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { AuthContext } from '../context/AuthContext';
 
 function LogIn() {
 
     const [validated, setValidated] = useState(false);
+    const { login, userLogin, setUserLogin } = useContext(AuthContext);
+
+    const handleChangeHandler = (event) => {
+        setUserLogin({ ...userLogin, [event.target.name]: event.target.value });
+    };
     
     const handleSubmit = (event) => {
-        console.log(event)
+        event.preventDefault();
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
             event.preventDefault();
             event.stopPropagation();
         }
         setValidated(true);
+        login();
     };
 
   return (
@@ -26,16 +33,16 @@ function LogIn() {
               <h1 style={{textAlign: "center"}}>Log In</h1>
               <Form noValidate validated={validated} onSubmit={handleSubmit} style={{ padding: "20px" }}>
                   <div className="formFlex">
-                      <Form.Group className="mb-3" controlId="formBasicUsername">
-                          <Form.Label>Username</Form.Label>
-                          <Form.Control type="username" placeholder="Enter username" required />
+                      <Form.Group className="mb-3" controlId="formBasicEmail">
+                          <Form.Label>Email</Form.Label>
+                          <Form.Control type="email" placeholder="Enter email" name="email" onChange={handleChangeHandler} required />
                           <Form.Control.Feedback type="invalid">
-                              Wrong username.
+                              Wrong email.
                           </Form.Control.Feedback>
                       </Form.Group>
                       <Form.Group className="mb-3" controlId="formBasicPassword">
                           <Form.Label>Password</Form.Label>
-                          <Form.Control type="password" placeholder="Enter password" required />
+                          <Form.Control type="password" placeholder="Enter password" name="password" onChange={handleChangeHandler} required />
                           <Form.Control.Feedback type="invalid">
                               Wrong password.
                           </Form.Control.Feedback>

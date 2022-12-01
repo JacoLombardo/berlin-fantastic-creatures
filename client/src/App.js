@@ -8,12 +8,12 @@ import PersonalProfile from './views/PersonalProfile';
 import NoMatch from './views/NoMatch';
 import Ubahn from './views/Ubahn';
 import City from './views/City';
-// import { AuthContextProvider } from './context/AuthContext';
+import { AuthContextProvider } from './context/AuthContext';
 
 function App() {
   return (
     <div className="App">
-      {/* <AuthContextProvider> */}
+      <AuthContextProvider>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<LogIn />} />
@@ -23,7 +23,7 @@ function App() {
           <Route path="/ubahn" element={<Ubahn />} />
           <Route path="*" element={<NoMatch />} />
         </Routes>
-      {/* </AuthContextProvider> */}
+      </AuthContextProvider>
     </div>
   );
 }

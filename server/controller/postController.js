@@ -11,6 +11,41 @@ const getAllPosts = async (req, res) => {
     }
 };
 
+const sharePost = async (req, res) => {
+  
+  console.log("req.body :>> ", req.body);
+  const { text, img, date, author } = req.body;
+
+  try {
+    const newPost = new Post({
+      author: author,
+      date: date,
+      text: text,
+      img: img,
+    });
+      
+    try {
+      const savedPost = await newPost.save();
+      res.status(201).json({
+        msg: "Post sharing successful",
+        post: savedPost,
+      });
+    } catch (error) {
+      console.log("error", error);
+      res.status(500).json({
+        msg: "Post sharing error",
+        error: error,
+      });
+    }
+  } catch (error) {
+    console.log("error", error);
+    res.status(500).json({
+      msg: "Post sharing error",
+      error: error,
+    });
+  }
+};
+
 const imageUploadPosts = async (req, res) => {
   try {
     console.log("req :>> ", req.file);
@@ -31,6 +66,4 @@ const imageUploadPosts = async (req, res) => {
   }
 };
 
-
-
-export {getAllPosts, imageUploadPosts};
+export {getAllPosts, imageUploadPosts, sharePost};

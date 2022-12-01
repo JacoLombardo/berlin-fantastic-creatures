@@ -1,6 +1,8 @@
 import User from '../model/userModel.js';
 import { v2 as cloudinary } from 'cloudinary';
 import encryptPassword from '../tools/encryptPassword.js';
+import isPasswordCorrect from '../tools/isPasswordCorrect.js';
+import issueToken from '../tools/jwt.js';
 
 const getAllUsers = async (req, res) => {
     try {
@@ -62,6 +64,46 @@ const registerUser = async (req, res) => {
     }
 };
 
+const loginUser = async (req, res) => {
+    
+    const { email, password } = req.body;
+    
+    try {
+        const existingUser = await User.findOne({ email: email });
+        console.log("existingUser :>> ", existingUser);
+        
+        if (!existingUser) {
+            res.status(200).json({ msg: "Invalid email" });
+        } else {
+            const verified = await isPasswordCorrect(password, existingUser.password);
+            console.log("verified", verified);
+
+            if (verified) {
+                console.log("verified >>>>>", verified);
+                const token = issueToken(existingUser._id);
+                console.log("token :>> ", token);
+                res.status(200).json({
+                    msg: "Sucessfully logged in",
+                    user: {
+                        id: existingUser._id,
+                        username: existingUser.username,
+                        firstName: existingUser.firstName,
+                        lastName: existingUser.lastName,
+                        email: existingUser.email,
+                        profilePic: existingUser.profilePic,
+                    },
+                    token,
+                });
+            } else {
+                res.status(401).json({ msg: "incorrect password" });
+            }
+        }
+    } catch (error) {
+        console.log("error", error);
+        res.status(500).json({ msg: "Login error" });
+    }
+};
+
 const imageUploadUser = async (req, res) => {
   try {
     console.log("req :>> ", req.file);
@@ -83,4 +125,4 @@ const imageUploadUser = async (req, res) => {
 };
 
 
-export {getAllUsers, registerUser, imageUploadUser};
+export {getAllUsers, registerUser, imageUploadUser, loginUser};
