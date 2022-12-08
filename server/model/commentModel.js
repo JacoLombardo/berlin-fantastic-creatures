@@ -2,7 +2,6 @@ import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
 const commentSchema = new Schema({
-    _id: Schema.Types.ObjectId,
     author: {
         type: Schema.Types.ObjectId,
         ref: 'User'
@@ -17,23 +16,10 @@ const commentSchema = new Schema({
         required: true,
         unique: false
     },
-    img: {
-        type: Object,
-        required: false,
-        unique: false
-    },
-    meta: {
-        likes: {
-            type: Number,
-            required: false,
-            unique: false
-        },
-        favourites: {
-            type: Number,
-            required: false,
-            unique: false
-        }
-    },
+    likes: [{
+            type: Schema.Types.ObjectId,
+            ref: 'User'
+    }],
     post: {
         type: Schema.Types.ObjectId,
         ref: 'Post'

@@ -1,0 +1,183 @@
+/* Profile */
+
+.profileDiv {
+    background-color: bisque;
+    border: 2px solid black;
+    border-radius: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+}
+
+.profileDiv> :nth-child(2) {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.profilePic {
+    width: 180px;
+    margin-right: 20px;
+    border-radius: 10px;
+}
+
+.profileTitle {
+    font-size: 30px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profileInfo {
+    background-color: darkgray;
+    border-radius: 10px;
+    width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 5px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.profileInput {
+    width: 150px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.profileInfo>*,
+.profileInfo>*>* {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.changeIcon {
+    width: 20px;
+    border: 2px solid black;
+    border-radius: 25px;
+    padding: 1px;
+    margin-left: 3px;
+}
+
+.infoH {
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.profilePosts {
+    background-color: darkgray;
+    margin-top: 20px;
+    width: 550px;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.profileFav {
+    background-color: darkgray;
+    margin-top: 20px;
+    width: 550px;
+    padding: 5px;
+    border-radius: 10px
+}
+
+.profileImgInput{
+    border-radius: 10px;
+    border: 1px solid black;
+    background-color: white;
+    width: 95px;
+    margin-right: 20px;
+}
+
+.profileImgDiv{
+    display: flex;
+    flex-direction: column;
+}
+
+.profileBio{
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bioInputText{
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 100px;
+    border-radius: 10px;
+}
+
+.bioIconDiv{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 310px;
+}
+
+/* Posts */
+
+.personalPostsDiv{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 10px;
+}
+
+.personalPostDiv{
+    border: 1px solid black;
+    margin: 10px;
+    border-radius: 10px 10px 5px 5px;
+}
+
+.personalPostImg{
+    width: 200px;
+    border-radius: 10px 10px 0px 0px;
+}
+
+.personalPostDate{
+    font-size: smaller;
+    color: black;
+    margin-bottom: 0px;
+}
+
+.changeIconImg{
+    position: absolute;
+    width: 20px;
+    border: 2px solid black;
+    border-radius: 25px;
+    padding: 1px;
+    margin-top: 3px;
+    margin-left: 3px;
+}
+
+.backSubmitDiv{
+    position: absolute;
+    margin-top: 0px;
+    margin-left: 2px;
+}
+
+.changeIconImg1 {
+    width: 20px;
+    border: 2px solid black;
+    border-radius: 25px;
+    padding: 1px;
+    margin-right: 3px;
+}
+
+.profileIconDiv{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    margin-top: 5px;
+}
+
+.profileMetaIcon {
+    width: 20px;
+    margin-right: 10px;
+    margin-left: 5px;
+}

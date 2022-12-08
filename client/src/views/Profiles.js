@@ -1,47 +1,77 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import NavBar from '../components/NavBar';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import test from '../Images/profile pics/gustavo.jpg';
+import { Navigate, useParams } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
+import PersonalPosts from '../components/PersonalInfo/PersonalPosts';
+import Favourites from '../components/Favourites/Favourites';
+import favourite from '../Images/icon/favourite.png';
+import post from '../Images/icon/post.png';
+import Logo from '../components/Logo/Logo';
 
 function Profiles() {
-  
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
 
+  const [profile, setProfile] = useState({});
+  const [loading, setLoading] = useState(true);
+  const { user } = useContext(AuthContext);
+  const { id } = useParams();
+
+  const getProfile = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/users/user?_id=${id}`);
+      const result = await response.json();
+      setProfile(result);
+      setLoading(false);
+    } catch (error) {
+      console.log("Error getting profile", error);
+    }
+  };
+
+  useEffect(() => {
+    getProfile();
+  }, []);
     
   return (
-  <>
+    <>
+    {id === user._id && <Navigate to="/profile" />}
     <NavBar />
       <br /><br />
+      {loading ? 
+        <Logo />
+        :
       <div className="profileDiv">
-        <h1 className="profileTitle">My Personal Profile</h1>
+        <h1 className="profileTitle">Personal profile of {profile.username}</h1>
         <div>
-            <img src={test} alt="profile-pic" className="profilePic"></img>
+            <img src={profile.profilePic} alt="profile-pic" className="profilePic"></img>
+            <div>
             <div className="profileInfo">
-                <div><h1 className="infoH">Username:</h1><p>Alpha</p></div>
-                <div><h1 className="infoH">First Name:</h1><p>Beta</p></div>
-                <div><h1 className="infoH">Last Name:</h1><p>Gamma</p></div>
+                <div><h1 className="infoH">Username:</h1><p>{profile.username}</p></div>
+                <div><h1 className="infoH">First Name:</h1><p>{profile.firstName}</p></div>
+              <div><h1 className="infoH">Last Name:</h1><p>{profile.lastName}</p></div>
             </div>
+            {profile.bio &&
+              <div className="profileInfo">
+                <h1 className="infoH">Their bio</h1>
+                <p className="profileBio">{profile.bio}</p>
+                </div>}
+              </div>
+          <div className="profilePosts">
+            <div className="profileIconDiv">
+              <img src={post} alt="favourites" className="profileMetaIcon" />
+              <h1 className="infoH">Their posts:</h1>
+            </div>
+            <PersonalPosts userId={id} />
+          </div>
+          <div className="profileFav">
+            <div className="profileIconDiv">
+              <img src={favourite} alt="favourites" className="profileMetaIcon" />
+              <h1 className="infoH">Their favourites:</h1>
+            </div>
+            <Favourites userId={id} />
+          </div>
         </div>
-      </div><Button variant="primary" onClick={handleShow}>Your posts</Button>
-
-          
-
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
-      </>
+        </div>
+      }
+    </>
   )
 }
 

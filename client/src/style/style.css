@@ -10,7 +10,7 @@
 
 @media (prefers-reduced-motion: no-preference) {
     .logoImg {
-        animation: logoImg-spin infinite 5s linear;
+        animation: logoImg-spin infinite 3s linear;
     }
 }
 
@@ -79,6 +79,12 @@
     justify-content: flex-end;
 }
 
+.imgRegisterPreview {
+    width: 300px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
 /* Fab */
 
 .fab{
@@ -90,163 +96,63 @@
     position: fixed;
 }
 
-/* Profile */
+/* Comment */
 
-.profileDiv{
-    background-color: bisque;
-    border: 2px solid black;
-    border-radius: 10px;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 20px;
-    max-width: 600px;
-    display: flex;
-    flex-direction: column;
-}
-
-.profileDiv > :nth-child(2){
+.commentDiv{
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-    flex-wrap: wrap;
 }
 
-.profilePic{
-    width: 180px;
-    margin-right: 20px;
+.commentInput{
+    width: 400px;
+    height: 30px;
     border-radius: 10px;
+
 }
 
-.profileTitle{
-    font-size: 30px;
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.profileInfo{
-    background-color: darkgray;
-    border-radius: 10px;
-    width: 320px;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 5px;
-}
-
-.profileInput{
-    width: 150px;
+.commentUserPic{
+    width: 40px;
+    border-radius: 50px;
     margin-bottom: 10px;
-    border-radius: 5px;
+    margin-right: 10px;
 }
 
-.profileInfo > *, .profileInfo > * > *{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
-}
-
-.changeIcon{
-    width: 20px;
-    border: 2px solid black;
-    border-radius: 25px;
-    padding: 1px;
-    margin-left: 3px;
-}
-
-.infoH{
-    font-size: 17px;
+.commentUsername {
+    font-size: 14px;
     font-weight: 600;
 }
 
-.profilePosts{
-    background-color: darkgray;
-    margin-top: 20px;
-    /* margin-bottom: 20px; */
-    width: 550px;
-    padding: 5px;
-    border-radius: 10px;
-}
-
-.profileFav{
-    background-color: darkgray;
-    margin-top: 20px;
-    /* margin-bottom: 20px; */
-    width: 550px;
-    padding: 5px;
-    border-radius: 10px
-}
-
-/* Content */
-
-.contentDiv {
-    background-color: bisque;
-    border: 2px solid black;
-    border-radius: 10px;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 20px;
-}
-
-@media screen and (min-width: 800px) {
-    div.contentDiv {
-        max-width: 850px;
-    }
-}
-
-@media screen and (max-width: 800px) {
-    div.contentDiv {
-        max-width: 400px;
-    }
-}
-
-.contentTitle{
-    text-align: center;
-    
-}
-
-.hr3 {
-    border: 0;
-    height: 4px;
-    background-image: linear-gradient(to right, transparent, black, transparent);
-}
-
-.postDiv {
-    background-color: darkgray;
-    width: 700px;
-    border-radius: 10px;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 30px 30px 10px 30px;
-}
-
-.postInputText{
-    width: 640px;
-    height: 100px;
-    border-radius: 10px;
-    margin-bottom: 10px;
-}
-
-.postInput{
-    border-radius: 10px;
-    border: 1px solid black;
-    background-color: white;
-    margin-bottom: 5px;
-}
-
-.postButton {
-    width: 100px;
-    height: 30px;
-    border-radius: 10px;
-    border: 2px solid black;
-}
-
-div.postDiv > form > div:last-child{
+.commentHeader{
     display: flex;
-    justify-content: flex-end;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 550px;
+    height: 20px;
 }
 
-.imgPreview{
-    width: 640px;
-    border-radius: 10px;
-    margin-bottom: 10px;
+.commentHeader > div > p {
+    font-size: 14px;
+}
+
+.deleteIconComment{
+    width: 15px;
+    margin-left: 10px;
+}
+
+.commentHeader > :nth-child(2){
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+
+.metaIconComment {
+    width: 15px;
+    margin-right: 15px;
+}
+
+.likesDivComment {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
 }

@@ -1,60 +1,41 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { AuthContext } from '../../context/AuthContext';
+import moment from 'moment';
 
-function Share() {
-
-  // const [show, setShow] = useState(false);
-  const [newPost, setNewPost] = useState({});
-  // const [postImg, setPostImg] = useState("");
+function Share({ ubahn, city, getPosts }) {
+  
+  const { user } = useContext(AuthContext);
+  const text = useRef();
   const [previewFile, setPreviewFile] = useState(null);
   const [imgDataURL, setImgDataURL] = useState(null);
 
-  const consoleL = (event) => {
-    event.preventDefault();
-    // console.log(postImg);
-  }
-
-  const previewImg = (event) => {
-    setPreviewFile(event.target.files[0]);
-  };
-
-    
-  const handleChangeHandler = (event) => {
-    setNewPost({ ...newPost, text: event.target.value });
-  };
-    
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    uploadPicture();
-
-    // setTimeout(() => {
-    //   sharePost();
-    // }, 5000);
-  };
-
   const sharePost = async (postImg) => {
-
-    console.log("BBB", postImg)
-      
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
     
     const urlencoded = new URLSearchParams();
-    // urlencoded.append("author", user.id);
-    urlencoded.append("text", newPost.text);
-    urlencoded.append("date", new Date());
+    urlencoded.append("author", user._id);
+    urlencoded.append("text", text.current.value);
+    urlencoded.append("date", new moment().format('MMMM Do YYYY, h:mm:ss a'));
     urlencoded.append("img", postImg);
-
-    var requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: urlencoded,
-      redirect: "follow",
+    if (ubahn) {
+      urlencoded.append("category", "ubahn");
+    } else if (city) {
+      urlencoded.append("category", "city");
     };
-    
-    const response = await fetch("http://localhost:5000/posts/share", requestOptions);
-    const result = await response.json();
-    console.log("result:", result);
-    alert("Post successfully shared!");
+    const requestOptions = { method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow" };
+    try {
+      const response = await fetch("http://localhost:5000/posts/share", requestOptions);
+      const result = await response.json();
+      alert("Post successfully shared!");
+      if (ubahn) {
+        getPosts(ubahn);
+      } else if (city) {
+        getPosts(city);
+      };
+    } catch (error) {
+      console.log("error :>> ", error);
+    };
   };
 
   const uploadPicture = async () => {
@@ -65,7 +46,6 @@ function Share() {
     try {
       const response = await fetch("http://localhost:5000/posts/imageupload", requestOptions);
       const result = await response.json();
-      console.log("result", result);
       sharePost(result.image);
     } catch (error) {
       console.log("error :>> ", error);
@@ -92,22 +72,20 @@ function Share() {
     }
   }, [previewFile]);
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setShow(true);
-  //   }, 3000);
-  // }, []);
-
   return (
       <>
         <div className="postDiv">
-          <form>
-            <textarea className="postInputText" type="text" name="post-text" value={newPost.text ? newPost.text : ""} onChange={handleChangeHandler}></textarea>
-            <input className="postInput" type="file" accept="image/*" name="img" onChange={previewImg}></input>
-            {imgDataURL && <img src={imgDataURL} alt="post-pic" className="imgPreview"></img>}
+        <form>
+          <div className="postHeader">
+            <img src={user.profilePic} alt="userpic" className="postUserPic" />
             <div>
-              <button className="postButton" type="submit" onClick={handleSubmit}>Share!</button>
-              <button type="submit" onClick={consoleL}>AAA</button>
+              <h1 className="postUsername">{user.username}</h1>
+              <textarea className="postInputText" type="text" name="post-text" ref={text} />
+            </div></div>
+            <input className="postInput" type="file" accept="image/*" name="img" onChange={(event) => {setPreviewFile(event.target.files[0])}} />
+            {imgDataURL && <img src={imgDataURL} alt="post-pic" className="imgPreview" />}
+            <div>
+              <button className="postButton" type="submit" onClick={() => {uploadPicture()}}>Share!</button>
             </div>
           </form>    
         </div>

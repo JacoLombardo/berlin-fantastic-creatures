@@ -1,16 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Post from './Post';
 
-function Posts() {
+function Posts({ ubahn, city, getPosts, posts }) {
 
-  const [posts, setPosts] = useState([]);
-  
+  let test = "";
+  if (ubahn) {
+    test = ubahn
+  } else if (city) {
+    test = city
+  }
 
   return (
     <>
-      <div className="posts">
-        {posts && posts.map((index, post) => {
-          return <Post key={index} post={post} />
+      <div>
+        {posts && posts.map((post, index) => {
+          return <Post key={index} test={test} post={post} getPosts={getPosts} />
         })}
       </div>
       </>

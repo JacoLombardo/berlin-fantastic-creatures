@@ -13,7 +13,7 @@ const postSchema = new Schema({
     },
     text: {
         type: String,
-        required: false,
+        required: true,
         unique: false
     },
     img: {
@@ -21,23 +21,23 @@ const postSchema = new Schema({
         required: true,
         unique: false
     },
-    meta: {
-        likes: {
-            type: Number,
-            required: false,
-            unique: false
-        },
-        favourites: {
-            type: Number,
-            required: false,
-            unique: false
-        }
+    category: {
+        type: String,
+        required: true,
+        unique: false
     },
     comments: [{
         type: Schema.Types.ObjectId,
         ref: 'Comment'
+    }],
+    likes: [{
+            type: Schema.Types.ObjectId,
+            ref: 'User'
+    }],
+    favourited: [{
+            type: Schema.Types.ObjectId,
+            ref: 'User'
     }]
-    
 });
 const Post = mongoose.model('Post', postSchema);
 export default Post

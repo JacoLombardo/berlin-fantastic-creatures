@@ -7,6 +7,8 @@ import postRoute from './route/postRoute.js'
 import commentRoute from './route/commentRoute.js'
 import * as dotenv from "dotenv";
 import cloudinaryConfig from './config/cloudinary.js';
+import passport from "passport";
+import passportConfig from './config/passport.js';
 // loading .env file
 dotenv.config();
 
@@ -26,6 +28,8 @@ const addMiddleWares = () => {
   };
   app.use(cors(corsOptions));
   cloudinaryConfig();
+  app.use(passport.initialize());
+  passportConfig(passport);
 };
 
 const startServer = () => {

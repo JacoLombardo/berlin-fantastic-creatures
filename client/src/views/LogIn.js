@@ -7,11 +7,7 @@ import { AuthContext } from '../context/AuthContext';
 function LogIn() {
 
     const [validated, setValidated] = useState(false);
-    const { login, userLogin, setUserLogin } = useContext(AuthContext);
-
-    const handleChangeHandler = (event) => {
-        setUserLogin({ ...userLogin, [event.target.name]: event.target.value });
-    };
+    const { login, email, password } = useContext(AuthContext);
     
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -35,14 +31,14 @@ function LogIn() {
                   <div className="formFlex">
                       <Form.Group className="mb-3" controlId="formBasicEmail">
                           <Form.Label>Email</Form.Label>
-                          <Form.Control type="email" placeholder="Enter email" name="email" onChange={handleChangeHandler} required />
+                          <Form.Control type="email" placeholder="Enter email" name="email" ref={email} required />
                           <Form.Control.Feedback type="invalid">
                               Wrong email.
                           </Form.Control.Feedback>
                       </Form.Group>
                       <Form.Group className="mb-3" controlId="formBasicPassword">
                           <Form.Label>Password</Form.Label>
-                          <Form.Control type="password" placeholder="Enter password" name="password" onChange={handleChangeHandler} required />
+                          <Form.Control type="password" placeholder="Enter password" name="password" ref={password} required />
                           <Form.Control.Feedback type="invalid">
                               Wrong password.
                           </Form.Control.Feedback>

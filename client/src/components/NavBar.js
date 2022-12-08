@@ -17,8 +17,8 @@ function NavBar() {
           <Navbar.Brand as={Link} to="/"><img className="logoNav" src={Logo} alt="logo" /></Navbar.Brand>
           <Navbar.Brand as={Link} to="/">Berlin Fantastic Creatures</Navbar.Brand>
           <NavDropdown title="Menu" id="basic-nav-dropdown">
-            {!isUser && <NavDropdown.Item as={Link} to="/register">Register</NavDropdown.Item>}
-            {isUser && <NavDropdown.Item as={Link} to="/profile">My Profile</NavDropdown.Item>}
+            {isUser ? <NavDropdown.Item as={Link} to="/profile">My Profile</NavDropdown.Item>
+              : <NavDropdown.Item as={Link} to="/register">Register</NavDropdown.Item>}
             {isUser ? <NavDropdown.Item onClick={logout}>Log Out</NavDropdown.Item>
               : <NavDropdown.Item as={Link} to="/login">Log In</NavDropdown.Item>}
             <NavDropdown.Item as={Link} to="/city">City</NavDropdown.Item>

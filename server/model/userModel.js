@@ -32,7 +32,16 @@ const userSchema = new Schema({
         required: false,
         unique: false,
     },
+    bio: {
+        type: String,
+        required: false,
+        unique: false,
+    },
     posts: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Post'
+    }],
+    favourites: [{
         type: Schema.Types.ObjectId,
         ref: 'Post'
     }]
