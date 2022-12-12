@@ -1,10 +1,12 @@
 import { ExtractJwt, Strategy as JwtStrategy } from "passport-jwt";
 import User from "../model/userModel.js";
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 var opts = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-//   secretOrKey: process.env.JWT_SECRET_KEY
-  secretOrKey: "Mondobongo"
+  secretOrKey: process.env.JWT_SECRET_KEY
 };
 
 const jwtStrategy = new JwtStrategy(opts, function (jwt_payload, done) {
@@ -14,11 +16,9 @@ const jwtStrategy = new JwtStrategy(opts, function (jwt_payload, done) {
       return done(err, false);
     }
     if (user) {
-    //   console.log("user in passport>>>>>", user);
       return done(null, user);
     } else {
       return done(null, false);
-      // or you could create a new account
     }
   });
 });

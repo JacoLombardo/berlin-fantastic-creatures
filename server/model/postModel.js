@@ -21,6 +21,11 @@ const postSchema = new Schema({
         required: true,
         unique: false
     },
+    img_id: {
+        type: String,
+        required: false,
+        unique: false
+    },
     category: {
         type: String,
         required: true,

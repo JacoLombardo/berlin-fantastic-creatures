@@ -6,18 +6,52 @@
     border-radius: 10px;
     margin-left: auto;
     margin-right: auto;
-    padding: 20px;
 }
 
 @media screen and (min-width: 800px) {
     div.contentDiv {
         max-width: 850px;
+        padding: 20px;
+    }
+    .postDiv{
+        max-width: 700px;
+        padding: 30px 30px 10px 30px;
+    }
+    .postInputText {
+        max-width: 560px;
+    }
+    .postInput {
+        margin-left: 77px;
+    }
+    .imgPreview {
+        width: 640px;
     }
 }
 
 @media screen and (max-width: 800px) {
     div.contentDiv {
         max-width: 400px;
+        padding: 10px;
+    }
+    .postDiv{
+        max-width: 400px;
+        padding: 10px 10px 5px 10px;
+    }
+    .postInputText {
+        max-width: 200px;
+    }
+    .postInput {
+        max-width: 100px;
+        margin-left: 5px;
+    }
+    .imgPreview {
+        max-width: 350px;
+        margin-left: -10px;
+        margin-right: -10px;
+    }
+    .adaptScreen{
+        display: flex;
+        flex-direction: column;
     }
 }
 
@@ -34,13 +68,11 @@
 
 .postDiv {
     background-color: darkgray;
-    width: 700px;
     border-radius: 10px;
     margin-left: auto;
     margin-right: auto;
     margin-top: 10px;
     margin-bottom: 10px;
-    padding: 30px 30px 10px 30px;
 }
 
 .postInputText {
@@ -58,6 +90,12 @@
     margin-left: 77px;
 }
 
+.postEditInput{
+    border-radius: 10px;
+    border: 1px solid black;
+    background-color: white;
+}
+
 .postButton {
     width: 100px;
     height: 30px;
@@ -71,7 +109,6 @@ div.postDiv>form>div:last-child {
 }
 
 .imgPreview {
-    width: 640px;
     border-radius: 10px;
     margin-bottom: 10px;
 }
@@ -108,6 +145,7 @@ div.postHeader>div> :nth-child(1) {
 
 .deleteIconPost {
     width: 20px;
+    margin-left: 5px;
 }
 
 .link {
@@ -123,4 +161,9 @@ div.postHeader>div> :nth-child(1) {
     display: flex;
     flex-direction: row;
     align-items: flex-end;
+}
+
+.actionIconsDiv{
+    display: flex;
+    flex-direction: row;
 }

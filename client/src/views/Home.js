@@ -3,34 +3,14 @@ import NavBar from '../components/NavBar';
 import { AuthContext } from '../context/AuthContext';
 import Skyline from '../Images/pics/skyline.jpg';
 import '../style/style.css';
-import getToken from '../tools/getToken';
 
 function Home() {
 
-    const { user, logout } = useContext(AuthContext);
+    const { checkIfUserIsLoggedIn } = useContext(AuthContext);
 
-    const validateToken = async () => {
-        const token = getToken();
-        if (token) {
-            const myHeaders = new Headers();
-            myHeaders.append("Authorization", `Bearer ${token}`);
-            const requestOptions = { method: "GET", headers: myHeaders, redirect: "follow" };
-            try {
-                const response = await fetch("http://localhost:5000/users/profile", requestOptions);
-                const result = await response.json();
-            } catch (error) {
-                console.log("error validating", error);
-                if (error) {
-                    logout();
-                };
-            };
-        };
-    };
 
     useEffect(() => {
-        if (user) {
-           validateToken(); 
-        };
+        checkIfUserIsLoggedIn();
     }, []);
 
   return (

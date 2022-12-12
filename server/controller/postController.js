@@ -1,7 +1,6 @@
 import Post from '../model/postModel.js';
 import { v2 as cloudinary } from 'cloudinary';
 import User from '../model/userModel.js';
-import mongoose from 'mongoose';
 import { ObjectId } from 'mongodb';
 import Comment from '../model/commentModel.js';
 
@@ -53,13 +52,14 @@ const getPostById = async (req, res) => {
 };
 
 const sharePost = async (req, res) => {
-  const { text, img, date, author, category } = req.body;
+  const { text, img, date, author, category, img_id } = req.body;
   try {
     const newPost = new Post({
       author: author,
       date: date,
       text: text,
       img: img,
+      img_id: img_id,
       category: category,
     });
       
@@ -94,24 +94,26 @@ const sharePost = async (req, res) => {
 };
 
 const deletePost = async (req, res) => {
-  const { id, user } = req.body;
+  const { post, user, img_id } = req.body;
   try {
     // delete post from user
     const query = { "_id": user};
     const updateDocument = {
-      $pull: { "posts": ObjectId(id) }
+      $pull: { "posts": ObjectId(post) }
     };
     const userUpdate = await User.updateOne(query, updateDocument);
     // delete post from favourites
-    const queryFav = { "favourites": ObjectId(id) };
+    const queryFav = { "favourites": ObjectId(post) };
     const updateFavDocument = {
-        $pull: { "favourites": ObjectId(id) }
+        $pull: { "favourites": ObjectId(post) }
     };
     const userFavouritedUpdate = await User.updateMany(queryFav, updateFavDocument);
     // delete comments of post
-    const commentUpdate = await Comment.deleteMany({ "post": ObjectId(id) });
+    const commentUpdate = await Comment.deleteMany({ "post": ObjectId(post) });
+    // delete image post
+    const postImage = await cloudinary.uploader.destroy(img_id);
     // delete post
-    const postUpdate = await Post.deleteOne({ _id: id });
+    const postUpdate = await Post.deleteOne({ _id: post });
 
     res.status(201).json({ msg: "Post successfully deleted" });
   } catch (error) {
@@ -121,6 +123,23 @@ const deletePost = async (req, res) => {
       error: error,
     });
   }
+};
+
+const updatePost = async (req, res) => {
+    const { id, text, img, img_id } = req.body;
+
+    try {
+        if (text) {
+            const updatePost = await Post.updateOne({ _id: id }, { text: text });
+            res.status(201).json({ msg: "Update successful", text: text });
+        } if (img) {
+            const updatePost = await Post.updateOne({ _id: id }, { img: img, img_id: img_id });
+            res.status(201).json({ msg: "Update successful", img: img, img_id: img_id });
+      }
+    } catch (error) {
+        console.log("error", error);
+        res.status(500).json({ msg: "Error updating info", error: error });
+    }
 };
 
 const favPost = async (req, res) => {
@@ -140,9 +159,7 @@ const favPost = async (req, res) => {
     };
     const update2 = await User.updateOne(queryUser, updateUser);
     
-    res.status(201).json({
-      msg: "Post successfully added to favourites"
-    });
+    res.status(201).json({ msg: "Post successfully added to favourites" });
   } catch (error) {
     console.log("error", error);
     res.status(500).json({
@@ -234,6 +251,7 @@ const imageUploadPosts = async (req, res) => {
     res.status(200).json({
       msg: "Image successfully uploaded",
       image: result.url,
+      img_id: result.public_id,
     });
   } catch (error) {
     console.error(error);
@@ -244,4 +262,4 @@ const imageUploadPosts = async (req, res) => {
   }
 };
 
-export { getAllPosts, getPostsUbahn, getPostsCity, imageUploadPosts, sharePost, getPostsByAuthor, deletePost, favPost, removeFav, likePost, removeLike, getPostById };
+export { getAllPosts, getPostsUbahn, getPostsCity, imageUploadPosts, sharePost, getPostsByAuthor, deletePost, favPost, removeFav, likePost, removeLike, getPostById, updatePost };

@@ -3,18 +3,18 @@ import Post from './Post';
 
 function Posts({ ubahn, city, getPosts, posts }) {
 
-  let test = "";
+  let category = "";
   if (ubahn) {
-    test = ubahn
+    category = ubahn
   } else if (city) {
-    test = city
+    category = city
   }
 
   return (
     <>
       <div>
         {posts && posts.map((post, index) => {
-          return <Post key={index} test={test} post={post} getPosts={getPosts} />
+          return <Post key={index} category={category} post={post} getPosts={getPosts} />
         })}
       </div>
       </>

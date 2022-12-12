@@ -28,6 +28,7 @@ function ShareComment({ postId, getComments }) {
         try {
             const response = await fetch("http://localhost:5000/comments/share", requestOptions);
             const result = await response.json()
+            text.current.value = "";
             alert("Comment successfully shared!");
             getComments(postId);
         } catch (error) {

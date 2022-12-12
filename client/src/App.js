@@ -11,6 +11,7 @@ import City from './views/City';
 import { AuthContextProvider } from './context/AuthContext';
 import Profiles from './views/Profiles';
 import { ContentContextProvider } from './context/ContentContext';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
@@ -21,7 +22,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<LogIn />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/profile" element={<PersonalProfile />} />
+          <Route path="/profile" element={<ProtectedRoute><PersonalProfile /></ProtectedRoute>} />
           <Route path="/city/user-:id" element={<Profiles />} />
           <Route path="/ubahn/user-:id" element={<Profiles />} />
           <Route path="/city" element={<City />} />

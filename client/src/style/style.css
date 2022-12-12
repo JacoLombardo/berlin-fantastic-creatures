@@ -1,5 +1,35 @@
 /* General */
 
+@media screen and (min-width: 800px) {
+    .containerDiv {
+        max-width: 500px;
+    }
+    .commentInput{
+        width: 400px;
+    }
+    .commentHeader{
+        width: 550px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .containerDiv {
+        max-width: 300px;
+    }
+    .commentInput{
+        max-width: 400px;
+    }
+    .commentHeader{
+        max-width: 300px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+}
+
 
 /* Logo */
 
@@ -56,18 +86,6 @@
     margin-right: auto;
 }
 
-@media screen and (min-width: 800px) {
-    div.containerDiv {
-        max-width: 500px;
-    }
-}
-
-@media screen and (max-width: 800px) {
-    div.containerDiv {
-        max-width: 300px;
-    }
-}
-
 .formFlex{
     display: flex;
     flex-wrap: wrap;
@@ -83,6 +101,11 @@
     width: 300px;
     border-radius: 10px;
     margin-bottom: 10px;
+}
+
+.errorMessage{
+    color: red;
+    font-weight: 500;
 }
 
 /* Fab */
@@ -105,10 +128,8 @@
 }
 
 .commentInput{
-    width: 400px;
     height: 30px;
     border-radius: 10px;
-
 }
 
 .commentUserPic{
@@ -124,10 +145,9 @@
 }
 
 .commentHeader{
-    display: flex;
+    /* display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    width: 550px;
+    justify-content: space-between; */
     height: 20px;
 }
 
@@ -137,7 +157,15 @@
 
 .deleteIconComment{
     width: 15px;
-    margin-left: 10px;
+    margin-left: 5px;
+}
+
+.changeIconComment{
+    width: 15px;
+    border: 2px solid black;
+    border-radius: 25px;
+    padding: 1px;
+    margin-left: 5px;
 }
 
 .commentHeader > :nth-child(2){

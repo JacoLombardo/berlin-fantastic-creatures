@@ -9,7 +9,7 @@ function Share({ ubahn, city, getPosts }) {
   const [previewFile, setPreviewFile] = useState(null);
   const [imgDataURL, setImgDataURL] = useState(null);
 
-  const sharePost = async (postImg) => {
+  const sharePost = async (postImg, img_id) => {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
     
@@ -18,11 +18,12 @@ function Share({ ubahn, city, getPosts }) {
     urlencoded.append("text", text.current.value);
     urlencoded.append("date", new moment().format('MMMM Do YYYY, h:mm:ss a'));
     urlencoded.append("img", postImg);
-    if (ubahn) {
-      urlencoded.append("category", "ubahn");
-    } else if (city) {
-      urlencoded.append("category", "city");
-    };
+    urlencoded.append("img_id", img_id);
+    if (ubahn) { urlencoded.append("category", "ubahn");
+    } else if (city) { urlencoded.append("category", "city") };
+    text.current.value = "";
+    setImgDataURL(null);
+    setPreviewFile(null);
     const requestOptions = { method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow" };
     try {
       const response = await fetch("http://localhost:5000/posts/share", requestOptions);
@@ -46,7 +47,7 @@ function Share({ ubahn, city, getPosts }) {
     try {
       const response = await fetch("http://localhost:5000/posts/imageupload", requestOptions);
       const result = await response.json();
-      sharePost(result.image);
+      sharePost(result.image, result.img_id);
     } catch (error) {
       console.log("error :>> ", error);
     };
@@ -85,7 +86,7 @@ function Share({ ubahn, city, getPosts }) {
             <input className="postInput" type="file" accept="image/*" name="img" onChange={(event) => {setPreviewFile(event.target.files[0])}} />
             {imgDataURL && <img src={imgDataURL} alt="post-pic" className="imgPreview" />}
             <div>
-              <button className="postButton" type="submit" onClick={() => {uploadPicture()}}>Share!</button>
+            <button className="postButton" type="submit" onClick={(event) => { event.preventDefault(); uploadPicture()}}>Share!</button>
             </div>
           </form>    
         </div>

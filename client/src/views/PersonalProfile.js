@@ -3,20 +3,22 @@ import NavBar from '../components/NavBar';
 import change from '../Images/icon/exchange.png';
 import submit from '../Images/icon/arrow.png';
 import back from '../Images/icon/back.png';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import PersonalPosts from '../components/PersonalInfo/PersonalPosts';
 import Favourites from '../components/Favourites/Favourites';
 import favourite from '../Images/icon/favourite.png';
 import post from '../Images/icon/post.png';
 import '../style/profile.style.css';
+import { ContentContext } from '../context/ContentContext';
 
 function PersonalProfile() {
 
-  const { user, getPersonalProfile } = useContext(AuthContext);
+  const { user, getPersonalProfile, logout, checkIfUserIsLoggedIn } = useContext(AuthContext);
+  const { deleteImage } = useContext(ContentContext);
   const [previewFile, setPreviewFile] = useState(null);
   const [imgDataURL, setImgDataURL] = useState(null);
-  const redirectTo = useNavigate();
+  const [errors, setErrors] = useState(null);
 
   let blankPic = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png";
 
@@ -41,18 +43,17 @@ function PersonalProfile() {
         
     const urlencoded = new URLSearchParams();
     urlencoded.append("user", user._id);
-    
     var requestOptions = { method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow" };
     try {
       const response = await fetch("http://localhost:5000/users/delete", requestOptions);
       const result = await response.json();
-      redirectTo("/");
+      logout();
     } catch (error) {
       console.log("error :>> ", error);
     };
-  }
+  };
 
-  const submitChange = async (profilePic) => {
+  const submitChange = async (profilePic, img_id) => {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
         
@@ -62,16 +63,26 @@ function PersonalProfile() {
     } if (firstName.current) { urlencoded.append("firstName", firstName.current.value);
     } if (lastName.current) { urlencoded.append("lastName", lastName.current.value);
     } if (bio.current) { urlencoded.append("bio", bio.current.value);
-    // } if (email.current) {
-    //   urlencoded.append("email", email.current.value);
-    // } if (password.current) {
-    //   urlencoded.append("password", password.current.value);
-    } if (profilePic) { urlencoded.append("profilePic", profilePic) }
+    } if (email.current) {
+      urlencoded.append("email", email.current.value);
+    } if (password.current) {
+      urlencoded.append("password", password.current.value);
+    } if (profilePic) {
+      urlencoded.append("profilePic", profilePic);
+      urlencoded.append("img_id", img_id)
+    }
     
     var requestOptions = { method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow" };
     try {
-      const response = await fetch("http://localhost:5000/users/upload", requestOptions);
+      const response = await fetch("http://localhost:5000/users/update", requestOptions);
       const result = await response.json();
+      if (result.errors) {
+        setErrors(result.errors);
+      } else if (!result.errors) {
+        setShowInput1(false);
+        setShowInput4(false);
+        setErrors(null);
+      };
     } catch (error) {
       console.log("error :>> ", error);
     };
@@ -86,7 +97,8 @@ function PersonalProfile() {
     try {
       const response = await fetch("http://localhost:5000/users/imageupload", requestOptions);
       const result = await response.json();
-      submitChange(result.image);
+      deleteImage(user.img_id);
+      submitChange(result.image, result.img_id);
     } catch (error) {
       console.log("error :>> ", error);
     };
@@ -113,7 +125,7 @@ function PersonalProfile() {
   }, [previewFile]);
 
   useEffect(() => {
-    getPersonalProfile();
+    checkIfUserIsLoggedIn();
   }, []);
 
   return (
@@ -136,26 +148,70 @@ function PersonalProfile() {
           </div>
           <div>
           <div className="profileInfo">
-            <div><h1 className="infoH">Username:</h1>
-              <div>{!showInput1 ? <p>{user.username}</p> : <input className="profileInput" type="text" name="username" ref={username}></input>}
-                {!showInput1 ? <Link onClick={() => {setShowInput1(true)}}><img className="changeIcon" src={change} alt="change" title="Change your username"></img></Link> :
-                  <Link onClick={() => {submitChange(); setShowInput1(false)}}><img className="changeIcon" src={submit} alt="change" title="Submit your change"></img></Link>}</div></div>
-            <div><h1 className="infoH">First Name:</h1>
-              <div>{!showInput2 ? <p>{user.firstName}</p> : <input className="profileInput" type="text" name="firstName" ref={firstName}></input>}
-                {!showInput2 ? <Link onClick={() => {setShowInput2(true)}}><img className="changeIcon" src={change} alt="change" title="Change your first name"></img></Link> :
-                  <Link onClick={() => {submitChange(); setShowInput2(false)}}><img className="changeIcon" src={submit} alt="change" title="Submit your change"></img></Link>}</div></div>
-            <div><h1 className="infoH">Last Name:</h1>
-              <div>{!showInput3 ? <p>{user.lastName}</p> : <input className="profileInput" type="text" name="lastName" ref={lastName}></input>}
-                {!showInput3 ? <Link onClick={() => {setShowInput3(true)}}><img className="changeIcon" src={change} alt="change" title="Change your last name"></img></Link> :
-                  <Link onClick={() => {submitChange(); setShowInput3(false)}}><img className="changeIcon" src={submit} alt="change" title="Submit your change"></img></Link>}</div></div>
-            <div><h1 className="infoH">Email:</h1>
-              <div>{!showInput4 ? <p>{user.email}</p> : <input className="profileInput" type="email" name="email" ref={email}></input>}
-                {!showInput4 ? <Link onClick={() => {setShowInput4(true)}}><img className="changeIcon" src={change} alt="change" title="Change your email"></img></Link> :
-                  <Link onClick={() => {submitChange(); setShowInput4(false)}}><img className="changeIcon" src={submit} alt="change" title="Submit your change"></img></Link>}</div></div>
-            <div><h1 className="infoH">Password:</h1>
-              <div>{!showInput5 ? <p></p> : <input className="profileInput" type="password" name="password" ref={password}></input>}
-                {!showInput5 ? <Link onClick={() => {setShowInput5(true)}}><img className="changeIcon" src={change} alt="change" title="Change your password"></img></Link> :
-                  <Link onClick={() => {submitChange(); setShowInput5(false)}}><img className="changeIcon" src={submit} alt="change" title="Submit your change"></img></Link>}</div></div>
+              <div>
+                <h1 className="infoH">Username:</h1>
+                <div className="actionIconsDiv">
+                  <div className="profileMessageError">
+                    {!showInput1 ? <p>{user.username}</p>
+                      : <input className="profileInput" type="text" name="username" ref={username}></input>}
+                  {errors && errors.msg === "Username already in use" && <p className="errorMessage">{errors.msg}</p>}
+              </div>
+                  {!showInput1 ? <Link onClick={() => { setShowInput1(true) }}><img className="changeIcon" src={change} alt="change" title="Change your username"></img></Link>
+                    :
+                    <div>
+                      <Link onClick={() => { setShowInput1(false)}}><img className="changeIcon" src={back} alt="change" title="Discard your change"></img></Link>
+                      <Link onClick={() => { submitChange()}}><img className="changeIcon" src={submit} alt="change" title="Submit your change"></img></Link>
+                    </div>}
+                </div>
+                </div>
+              <div>
+                <h1 className="infoH">First Name:</h1>
+              <div className="actionIconsDiv">{!showInput2 ? <p>{user.firstName}</p> : <input className="profileInput" type="text" name="firstName" ref={firstName}></input>}
+                  {!showInput2 ? <Link onClick={() => { setShowInput2(true) }}><img className="changeIcon" src={change} alt="change" title="Change your first name"></img></Link>
+                    :
+                    <div>
+                      <Link onClick={() => { setShowInput2(false)}}><img className="changeIcon" src={back} alt="change" title="Discard your change"></img></Link>
+                      <Link onClick={() => { submitChange(); setShowInput2(false)}}><img className="changeIcon" src={submit} alt="change" title="Submit your change"></img></Link>
+                    </div>}
+                </div>
+              </div>
+              <div>
+                <h1 className="infoH">Last Name:</h1>
+              <div className="actionIconsDiv">{!showInput3 ? <p>{user.lastName}</p> : <input className="profileInput" type="text" name="lastName" ref={lastName}></input>}
+                  {!showInput3 ? <Link onClick={() => { setShowInput3(true) }}><img className="changeIcon" src={change} alt="change" title="Change your last name"></img></Link>
+                    :
+                    <div>
+                      <Link onClick={() => { setShowInput3(false)}}><img className="changeIcon" src={back} alt="change" title="Discard your change"></img></Link>
+                      <Link onClick={() => { submitChange(); setShowInput3(false)}}><img className="changeIcon" src={submit} alt="change" title="Submit your change"></img></Link>
+                    </div>}
+                </div>
+              </div>
+              <div>
+                <h1 className="infoH">Email:</h1>
+                <div className="actionIconsDiv">
+                  <div className="profileMessageError">
+                    {!showInput4 ? <p>{user.email}</p> : <input className="profileInput" type="email" name="email" ref={email}></input>}
+                    {errors && errors.msg === "Email already in use" && <p className="errorMessage">{errors.msg}</p>}
+                  </div>
+                  {!showInput4 ? <Link onClick={() => { setShowInput4(true) }}><img className="changeIcon" src={change} alt="change" title="Change your email"></img></Link>
+                    :
+                    <div>
+                      <Link onClick={() => { setShowInput4(false)}}><img className="changeIcon" src={back} alt="change" title="Discard your change"></img></Link>
+                      <Link onClick={() => { submitChange()}}><img className="changeIcon" src={submit} alt="change" title="Submit your change"></img></Link>
+                    </div>}
+                </div>
+              </div>
+              <div>
+                <h1 className="infoH">Password:</h1>
+              <div className="actionIconsDiv">{!showInput5 ? <p>●●●●●●</p> : <input className="profileInput" type="password" name="password" ref={password}></input>}
+                  {!showInput5 ? <Link onClick={() => { setShowInput5(true) }}><img className="changeIcon" src={change} alt="change" title="Change your password"></img></Link>
+                    :
+                    <div>
+                      <Link onClick={() => { setShowInput5(false)}}><img className="changeIcon" src={back} alt="change" title="Discard your change"></img></Link>
+                      <Link onClick={() => { submitChange(); setShowInput5(false)}}><img className="changeIcon" src={submit} alt="change" title="Submit your change"></img></Link>
+                    </div>}
+                </div>
+              </div>
           </div>
           <div className="profileInfo">
               {user.bio ?
@@ -163,7 +219,11 @@ function PersonalProfile() {
                   <div className="bioIconDiv">
                     <h1 className="infoH">Your bio</h1>
                     {!showInput7 ? <Link onClick={() => { setShowInput7(true) }}><img className="changeIcon" src={change} alt="change" title="Change your bio"></img></Link>
-                      : <Link onClick={() => { submitChange(); setShowInput7(false) }}><img className="changeIcon" src={submit} alt="change" title="Submit your change"></img></Link>}
+                      : 
+                      <div>
+                        <Link onClick={() => { setShowInput7(false) }}><img className="changeIcon" src={back} alt="change" title="Discard your change"></img></Link>
+                        <Link onClick={() => { submitChange(); setShowInput7(false) }}><img className="changeIcon" src={submit} alt="change" title="Submit your change"></img></Link>
+                    </div>}
                   </div>
                   {showInput7 ? <textarea className="bioInputText" type="text" name="bio-text" ref={bio} />
                     : <p className="profileBio">{user.bio}</p>}
@@ -173,7 +233,11 @@ function PersonalProfile() {
                   <div className="bioIconDiv">
                     <p style={{fontStyle: "italic"}}>You have no bio yet, add one!</p>
                     {!showInput7 ? <Link onClick={() => { setShowInput7(true) }}><img className="changeIcon" src={change} alt="change" title="Add a bio"></img></Link>
-                      : <Link onClick={() => { submitChange(); setShowInput7(false) }}><img className="changeIcon" src={submit} alt="change" title="Submit your change"></img></Link>}
+                      :
+                      <div>
+                        <Link onClick={() => { setShowInput7(false) }}><img className="changeIcon" src={back} alt="change" title="Discard your change"></img></Link>
+                        <Link onClick={() => { submitChange(); setShowInput7(false) }}><img className="changeIcon" src={submit} alt="change" title="Submit your change"></img></Link>
+                    </div>}
                   </div>
                   {showInput7 && <textarea className="bioInputText" type="text" name="bio-text" ref={bio} />}
                 </div>}
@@ -194,7 +258,8 @@ function PersonalProfile() {
             <Favourites user={user} />
           </div>
         </div>
-        <button onClick={deleteAccount}>Delete account</button>
+        <br /><br />
+        <button className="deleteButton" onClick={deleteAccount}>Delete account</button>
       </div>
       </>
   )

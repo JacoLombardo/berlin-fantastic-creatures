@@ -1,23 +1,56 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import deleteIcon from '../../Images/icon/delete.png';
 import { AuthContext } from '../../context/AuthContext';
 import { Link } from 'react-router-dom';
 import Like from '../../Images/icon/like.png';
 import Liked from '../../Images/icon/liked.png';
+import change from '../../Images/icon/exchange.png';
+import submit from '../../Images/icon/arrow.png';
+import back from '../../Images/icon/back.png';
+import { ContentContext } from '../../context/ContentContext';
 
 function Comment({ comment, postId, getComments }) {
   
   const { user } = useContext(AuthContext);
+  const { likeComment, removeLikeComment } = useContext(ContentContext);
   const [like, setLike] = useState(false);
+  const [showInput, setShowInput] = useState(false);
+
+  const text = useRef();
 
   const checkLike = () => {
-    if (comment.likes.length !== 0) {
+    if (user && comment.likes.length !== 0) {
       for (let i = 0; i < comment.likes.length; i++) {
         if (comment.likes[i] === user._id) {
           setLike(true);
         }
       }
     }
+  };
+
+  const submitChange = async () => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+        
+    const urlencoded = new URLSearchParams();
+    urlencoded.append("id", comment._id);
+    urlencoded.append("text", text.current.value);
+    
+    var requestOptions = { method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow" };
+    try {
+      const response = await fetch("http://localhost:5000/comments/update", requestOptions);
+      const result = await response.json();
+      getComments(postId);
+    } catch (error) {
+      console.log("error :>> ", error);
+    };
+  };
+
+  const onKeyUp = (event) => {
+    if (event.key === "Enter") {
+      submitChange();
+      setShowInput(false);
+    };
   };
 
   const deleteComment = async () => {
@@ -28,13 +61,7 @@ function Comment({ comment, postId, getComments }) {
     urlencoded.append("id", comment._id);
     urlencoded.append("post", postId);
 
-    var requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: urlencoded,
-      redirect: "follow",
-    };
-
+    var requestOptions = { method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow" };
     try {
       const response = await fetch("http://localhost:5000/comments/delete", requestOptions);
       const result = await response.json();
@@ -45,54 +72,13 @@ function Comment({ comment, postId, getComments }) {
     };
   };
 
-  const likeComment = async () => {
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-    
-    const urlencoded = new URLSearchParams();
-    urlencoded.append("comment", comment._id);
-    urlencoded.append("user", user._id);
-
-    var requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: urlencoded,
-      redirect: "follow",
-    };
-
-    try {
-      const response = await fetch("http://localhost:5000/comments/likes", requestOptions);
-      const result = await response.json();
-      alert("Post successfully liked!");
-      getComments(postId);
-    } catch (error) {
-      console.log("error :>> ", error);
-    };
+  const submitLikeComment = () => {
+    likeComment(comment._id, user._id);
+    getComments(postId);
   };
-
-  const removeLike = async () => {
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-    
-    const urlencoded = new URLSearchParams();
-    urlencoded.append("comment", comment._id);
-    urlencoded.append("user", user._id);
-
-    var requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: urlencoded,
-      redirect: "follow",
-    };
-
-    try {
-      const response = await fetch("http://localhost:5000/comments/removelike", requestOptions);
-      const result = await response.json();
-      alert("Like successfully removed!");
-      getComments(postId);
-    } catch (error) {
-      console.log("error :>> ", error);
-    };
+  const submitRemoveLikeComment = () => {
+    removeLikeComment(comment._id, user._id);
+    getComments(postId);
   };
 
   useEffect(() => {
@@ -106,16 +92,25 @@ function Comment({ comment, postId, getComments }) {
         <div>
           <div className="commentHeader">
             <Link to={`user-${comment.author._id}`} className="link"><h1 className="commentUsername">{comment.author.username}</h1></Link>
-              <div>
+              <div className="actionIconsDiv">
                 <p>{comment.date}</p>
-              {comment.author.username === user.username && <img src={deleteIcon} alt="delete" onClick={deleteComment} title="delete your comment" className="deleteIconComment"></img>}
+              {user && comment.author.username === user.username && <div>
+                {!showInput ? <Link onClick={() => { setShowInput(true) }}><img src={change} alt="change" title="Edit your comment" className="changeIconComment"></img></Link>
+                  :
+                  <div>
+                    <Link onClick={() => { setShowInput(false) }}><img className="changeIconComment" src={back} alt="change" title="Discard your change"></img></Link>
+                    <Link onClick={() => { submitChange(); setShowInput(false) }}><img src={submit} alt="submit" title="Submit your edit" className="changeIconComment"></img></Link>
+                  </div>}
+                <Link onClick={deleteComment}><img src={deleteIcon} alt="delete" title="Delete your comment" className="deleteIconComment"></img></Link>
+              </div>}
               </div>
           </div>
-          <p>{comment.text}</p>
+          {!showInput ? <p>{comment.text}</p> :
+            <textarea className="commentInput" type="text" name="comment-text" ref={text} onKeyUp={onKeyUp}></textarea>}
           <div className="likesDivComment">
-            {!like ? <Link onClick={likeComment}><img src={Like} alt="like" title="Like the comment!" className="metaIconComment" /></Link>
+            {!like ? <Link onClick={() => { submitLikeComment(); setLike(true) }}><img src={Like} alt="like" title="Like the comment!" className="metaIconComment" /></Link>
             :
-            <Link onClick={removeLike}><img src={Liked} alt="liked" title="Remove the like!" className="metaIconComment" /></Link>}
+              <Link onClick={() => { submitRemoveLikeComment(); setLike(false) }}><img src={Liked} alt="liked" title="Remove the like!" className="metaIconComment" /></Link>}
             {comment.likes && <p>{comment.likes.length} Likes</p>}
         </div>
         </div>

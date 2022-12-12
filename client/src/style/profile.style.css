@@ -39,7 +39,6 @@
     margin-right: auto;
     padding: 5px;
     margin-bottom: 10px;
-    margin-top: 10px;
 }
 
 .profileInput {
@@ -91,6 +90,7 @@
     background-color: white;
     width: 95px;
     margin-right: 20px;
+    margin-bottom: 10px;
 }
 
 .profileImgDiv{
@@ -117,6 +117,20 @@
     flex-direction: row;
     justify-content: space-between;
     width: 310px;
+}
+
+.deleteButton{
+    background-color: #ff1a1a;
+    color: white;
+    font-weight: bolder;
+    text-shadow: 1px 1px 0 #000;
+    border-radius: 5px;
+}
+
+.profileMessageError {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
 }
 
 /* Posts */

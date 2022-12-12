@@ -87,24 +87,16 @@ const deleteComment = async (req, res) => {
   }
 };
 
-const imageUploadComments = async (req, res) => {
-  try {
-    console.log("req :>> ", req.file);
-    const result = await cloudinary.uploader.upload(req.file.path, {
-      folder: "berlin-fantastic-creatures/comments",
-    });
-    console.log("result >>>>", result);
-    res.status(200).json({
-      msg: "Image successfully uploaded",
-      image: result.url,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      msg: "Error uploading image",
-      error: error,
-    });
-  }
+const updateComment = async (req, res) => {
+    const { id, text } = req.body;
+
+    try {
+            const updateComment = await Comment.updateOne({ _id: id }, { text: text });
+            res.status(201).json({ msg: "Update successful", text: text });
+    } catch (error) {
+        console.log("error", error);
+        res.status(500).json({ msg: "Error updating info", error: error });
+    }
 };
 
 const likeComment = async (req, res) => {
@@ -141,4 +133,4 @@ const removeLike = async (req, res) => {
 };
 
 
-export {getAllComments, getCommentsByPostId, imageUploadComments, deleteComment, shareComment, likeComment, removeLike};
+export {getAllComments, getCommentsByPostId, deleteComment, shareComment, likeComment, removeLike, updateComment};

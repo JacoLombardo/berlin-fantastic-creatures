@@ -19,12 +19,13 @@ function NavBar() {
           <NavDropdown title="Menu" id="basic-nav-dropdown">
             {isUser ? <NavDropdown.Item as={Link} to="/profile">My Profile</NavDropdown.Item>
               : <NavDropdown.Item as={Link} to="/register">Register</NavDropdown.Item>}
-            {isUser ? <NavDropdown.Item onClick={logout}>Log Out</NavDropdown.Item>
-              : <NavDropdown.Item as={Link} to="/login">Log In</NavDropdown.Item>}
+            {!isUser && <NavDropdown.Item as={Link} to="/login">Log In</NavDropdown.Item>}
             <NavDropdown.Item as={Link} to="/city">City</NavDropdown.Item>
             <NavDropdown.Item as={Link} to="/ubahn">Ubahn</NavDropdown.Item>
-            <NavDropdown.Divider />
-            <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
+            {isUser && <div>
+              <NavDropdown.Divider />
+              <NavDropdown.Item onClick={logout}>Log Out</NavDropdown.Item>
+            </div>}
           </NavDropdown>
         </Container>
       </Navbar>

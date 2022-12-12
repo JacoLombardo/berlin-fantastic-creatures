@@ -7,18 +7,12 @@ import '../style/content.style.css';
 
 function Ubahn() {
 
-  const { isUser, getPersonalProfile } = useContext(AuthContext);
+  const { user, checkIfUserIsLoggedIn } = useContext(AuthContext);
   const [posts, setPosts] = useState([]);
+
   let ubahn = "ubahn";
 
-  useEffect(() => {
-    getPersonalProfile();
-  }, []);
-
-  
-
   const getPosts = async (url) => {
-
     try {
       const response = await fetch(`http://localhost:5000/posts/${url}`);
       const result = await response.json();
@@ -30,6 +24,7 @@ function Ubahn() {
 
   useEffect(() => {
     getPosts(ubahn);
+    checkIfUserIsLoggedIn();
   }, []);
 
   return (
@@ -39,7 +34,7 @@ function Ubahn() {
         <div className="contentDiv">
         <h1 className="contentTitle">You enter the U-Bahn, what do you see?</h1>
         <hr className="hr3"></hr>
-        {isUser && <Share ubahn={ubahn} getPosts={getPosts} />}
+        {user && <Share ubahn={ubahn} getPosts={getPosts} />}
         <Posts ubahn={ubahn} posts={posts} getPosts={getPosts} />
       </div>
     </>

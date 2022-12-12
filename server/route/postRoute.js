@@ -1,5 +1,5 @@
 import express from 'express';
-import { deletePost, favPost, getAllPosts, getPostById, getPostsByAuthor, getPostsCity, getPostsUbahn, imageUploadPosts, likePost, removeFav, removeLike, sharePost } from '../controller/postController.js';
+import { deletePost, favPost, getAllPosts, getPostById, getPostsByAuthor, getPostsCity, getPostsUbahn, imageUploadPosts, likePost, removeFav, removeLike, sharePost, updatePost } from '../controller/postController.js';
 import multerUpload from '../tools/multer.js';
 
 
@@ -12,6 +12,7 @@ router.get('/personal', getPostsByAuthor);
 router.get('/personal', getPostById);
 router.post('/share', sharePost);
 router.post('/delete', deletePost)
+router.post('/update', updatePost);
 router.post('/imageupload', multerUpload.single("image"), imageUploadPosts);
 router.post('/favourites', favPost);
 router.post('/remove', removeFav);

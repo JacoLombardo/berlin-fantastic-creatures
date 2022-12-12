@@ -12,7 +12,7 @@ function Profiles() {
 
   const [profile, setProfile] = useState({});
   const [loading, setLoading] = useState(true);
-  const { user } = useContext(AuthContext);
+  const { user, checkIfUserIsLoggedIn } = useContext(AuthContext);
   const { id } = useParams();
 
   const getProfile = async () => {
@@ -28,11 +28,12 @@ function Profiles() {
 
   useEffect(() => {
     getProfile();
+    checkIfUserIsLoggedIn();
   }, []);
     
   return (
     <>
-    {id === user._id && <Navigate to="/profile" />}
+    {user && id === user._id && <Navigate to="/profile" />}
     <NavBar />
       <br /><br />
       {loading ? 

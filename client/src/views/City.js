@@ -6,13 +6,12 @@ import { AuthContext } from '../context/AuthContext';
 
 function City() {
 
-  const { isUser, getPersonalProfile } = useContext(AuthContext);
+  const { user, checkIfUserIsLoggedIn } = useContext(AuthContext);
   const [posts, setPosts] = useState([]);
 
   let city = "city";
 
   const getPosts = async (url) => {
-
     try {
       const response = await fetch(`http://localhost:5000/posts/${url}`);
       const result = await response.json();
@@ -24,7 +23,7 @@ function City() {
 
   useEffect(() => {
     getPosts(city);
-    getPersonalProfile();
+    checkIfUserIsLoggedIn();
   }, []);
 
   return (
@@ -34,8 +33,8 @@ function City() {
       <div className="contentDiv">
         <h1 className="contentTitle">You walk around the city, does something catch your attention?</h1>
         <hr className="hr3"></hr>
-          {isUser && <Share city={city} getPosts={getPosts} />}
-          <Posts city={city} posts={posts} getPosts={getPosts} />
+        {user && <Share city={city} getPosts={getPosts} />}
+        <Posts city={city} posts={posts} getPosts={getPosts} />
       </div>
     </>
   )

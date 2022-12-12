@@ -32,6 +32,11 @@ const userSchema = new Schema({
         required: false,
         unique: false,
     },
+    img_id: {
+        type: String,
+        required: false,
+        unique: false,
+    },
     bio: {
         type: String,
         required: false,

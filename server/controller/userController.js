@@ -6,6 +6,7 @@ import issueToken from '../tools/jwt.js';
 import { ObjectId } from 'mongodb';
 import Post from '../model/postModel.js';
 import Comment from '../model/commentModel.js';
+import { validationResult } from 'express-validator';
 
 const getAllUsers = async (req, res) => {
     try {
@@ -28,59 +29,84 @@ const getUserById = async (req, res) => {
 };
 
 const registerUser = async (req, res) => {
-    const { firstName, lastName, username, email, password, profilePic } = req.body;
+
+    const { firstName, lastName, username, email, password, profilePic, img_id } = req.body;
 
     try {
+        const errors = validationResult(req).array();
         const existingUsername = await User.findOne({ username: username });
-        const existingEmail = await User.findOne({ email: email });
         if (existingUsername) {
-            res.status(200).json({ msg: "Username already in use" });
-        } if (existingEmail) {
-            res.status(200).json({ msg: "Email already in use" });
-        } else {
-            const hashedPassword = await encryptPassword(password);
-            const blankPic = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png";
-            const newUser = new User({
-                firstName: firstName,
-                lastName: lastName,
-                username: username,
-                email: email,
-                password: hashedPassword,
-                profilePic: profilePic ? profilePic : blankPic,
+            errors.push({ msg: "Username already in use" });
+        };
+        const existingEmail = await User.findOne({ email: email });
+        if (existingEmail) {
+            errors.push({ msg: "Email already in use" });
+        };
+        if (errors.length > 0) {
+            console.log(errors);
+            return res.status(500).json({
+                errors: errors
             });
-            try {
-                const savedUser = await newUser.save();
-                res.status(201).json({ msg: "Registration successful", user: savedUser });
-            } catch (error) {
-                console.log("error", error);
-                res.status(500).json({ msg: "Registration error", error: error });
-            }
-        }
+        };
+        const hashedPassword = await encryptPassword(password);
+        const blankPic = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png";
+        const newUser = new User({
+            firstName: firstName,
+            lastName: lastName,
+            username: username,
+            email: email,
+            password: hashedPassword,
+            profilePic: profilePic ? profilePic : blankPic,
+            img_id: img_id,
+        });
+        try {
+            const savedUser = await newUser.save();
+            res.status(201).json({ msg: "Registration successful", user: savedUser });
+        } catch (error) {
+            console.log("error", error);
+            res.status(500).json({ msg: "Registration error", error: error });
+        };
     } catch (error) {
         console.log("error", error);
         res.status(500).json({ msg: "Registration error", error: error });
-    }
+    };
 };
 
 const updateUserInfo = async (req, res) => {
-    const { firstName, lastName, username, email, password, id, profilePic, bio } = req.body;
+    const { firstName, lastName, username, email, password, id, profilePic, img_id, bio } = req.body;
 
     try {
         if (username) {
-            const updateUser = await User.updateOne({ _id: id }, { username: username });
-            res.status(201).json({ msg: "Update successful", username: username });
+            const existingUsername = await User.findOne({ username: username });
+            if (existingUsername) { res.status(400).json({ errors: { msg: "Username already in use" } });
+            } else {
+                const updateUser = await User.updateOne({ _id: id }, { username: username });
+                res.status(201).json({ msg: "Update successful", username: username }); 
+            };
         } if (firstName) {
             const updateUser = await User.updateOne({ _id: id }, { firstName: firstName });
             res.status(201).json({ msg: "Update successful", firstName: firstName });
         } if (lastName) {
             const updateUser = await User.updateOne({ _id: id }, { lastName: lastName });
             res.status(201).json({ msg: "Update successful", lastName: lastName });
+        } if (email) {
+            const existingEmail = await User.findOne({ email: email });
+            if (existingEmail) {
+                res.status(400).json({ errors: { msg: "Email already in use" } });
+            } else {
+                const updateUser = await User.updateOne({ _id: id }, { email: email });
+                res.status(201).json({ msg: "Update successful", email: email });
+            };
         } if (profilePic) {
-            const updateUser = await User.updateOne({ _id: id }, { profilePic: profilePic });
-            res.status(201).json({ msg: "Update successful", profilePic: profilePic });
+            const updateUser = await User.updateOne({ _id: id }, { profilePic: profilePic, img_id: img_id });
+            res.status(201).json({ msg: "Update successful", profilePic: profilePic, img_id: img_id });
         } if (bio) {
             const updateUser = await User.updateOne({ _id: id }, { bio: bio });
             res.status(201).json({ msg: "Update successful", bio: bio });
+        } if (password) {
+            const hashedPassword = await encryptPassword(password);
+            const updateUser = await User.updateOne({ _id: id }, { password: hashedPassword });
+            res.status(201).json({ msg: "Update successful", password: hashedPassword });
         }
     } catch (error) {
         console.log("error", error);
@@ -89,37 +115,22 @@ const updateUserInfo = async (req, res) => {
 };
 
 const loginUser = async (req, res) => {
-    
     const { email, password } = req.body;
-    
     try {
         const existingUser = await User.findOne({ email: email });
-        console.log("existingUser :>> ", existingUser);
-        
         if (!existingUser) {
-            res.status(200).json({ msg: "Invalid email" });
+            res.status(200).json({ errors: [{ msg: "Invalid email" }] });
         } else {
             const verified = await isPasswordCorrect(password, existingUser.password);
-            console.log("verified", verified);
-
             if (verified) {
-                console.log("verified >>>>>", verified);
                 const token = issueToken(existingUser._id);
-                console.log("token :>> ", token);
                 res.status(200).json({
                     msg: "Sucessfully logged in",
-                    user: {
-                        id: existingUser._id,
-                        username: existingUser.username,
-                        firstName: existingUser.firstName,
-                        lastName: existingUser.lastName,
-                        email: existingUser.email,
-                        profilePic: existingUser.profilePic,
-                    },
+                    user: existingUser,
                     token,
                 });
             } else {
-                res.status(401).json({ msg: "incorrect password" });
+                res.status(401).json({ errors: [{ msg: "Wrong password" }] });
             }
         }
     } catch (error) {
@@ -129,9 +140,7 @@ const loginUser = async (req, res) => {
 };
 
 const deleteUser = async (req, res) => {
-    
     const { user } = req.body;
-
     try {
         ///// USER
         // delete user from favourited
@@ -140,7 +149,6 @@ const deleteUser = async (req, res) => {
             $pull: { "favourited": ObjectId(user) }
         };
         const userFavouritedUserUpdate = await Post.updateMany(queryFavUser, updateFavUserDocument);
-        
         ///// POSTS
         // get posts by author
         const posts = await Post.find({ "author": user });
@@ -153,10 +161,13 @@ const deleteUser = async (req, res) => {
                 $pull: { "favourites": ObjectId(posts[i]._id) }
             };
             const postFavouritesDelete = await User.updateMany(queryFavouritesDelete, updateFavouritesDelete);
+            // delete image post
+            if (posts[i].img_id) {
+                const postImageDelete = await cloudinary.uploader.destroy(posts[i].img_id);
+            };
             // delete post
             const postsDelete = await Post.deleteOne({ "_id": posts[i]._id });
         };
-
         ///// COMMENTS
         // delete likes to comment
         const queryCommentLike = { "likes": ObjectId(user) };
@@ -164,12 +175,14 @@ const deleteUser = async (req, res) => {
             $pull: { "likes": ObjectId(user) }
         };
         const commentLikeUpdate = await Comment.updateMany(queryCommentLike, updateCommentLike);
-
         // delete user
         const deleteUser = await User.deleteOne({ _id: user });
+        // delete image user
+        if (user.img_id) {
+            const userImageDelete = await cloudinary.uploader.destroy(user.img_id);
+        };
 
         res.status(200).json({ msg: "Account successfully deleted" });
-
   } catch (error) {
     console.log("error", error);
     res.status(500).json({
@@ -185,7 +198,7 @@ const imageUploadUser = async (req, res) => {
         folder: "berlin-fantastic-creatures/profilePics",
     });
     console.log("result >>>>", result);
-    res.status(200).json({ msg: "Image successfully uploaded", image: result.url });
+    res.status(200).json({ msg: "Image successfully uploaded", image: result.url, img_id: result.public_id });
   } catch (error) {
     console.error(error);
     res.status(500).json({ msg: "Error uploading image", error: error });
@@ -193,8 +206,21 @@ const imageUploadUser = async (req, res) => {
 };
 
 const getProfile = async (req, res) => {
-  const { user } = req;
+
+    const { user } = req;
+    
   res.status(200).json({ user: user });
 };
 
-export {getAllUsers, registerUser, imageUploadUser, loginUser, getUserById, getProfile, updateUserInfo, deleteUser};
+const imageDeleteUser = async (req, res) => {
+    const { img_id } = req.body;
+    try {
+        const result = await cloudinary.uploader.destroy(img_id);
+        res.status(200).json({ msg: "Image successfully deleted" });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg: "Error deleting image", error: error });
+    }
+};
+
+export {getAllUsers, registerUser, imageUploadUser, loginUser, getUserById, getProfile, updateUserInfo, deleteUser, imageDeleteUser};

@@ -1,13 +1,17 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import NavBar from '../components/NavBar';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
 function Register() {
 
+    const { checkIfUserIsLoggedIn } = useContext(AuthContext);
     const [previewFile, setPreviewFile] = useState(null);
     const [imgDataURL, setImgDataURL] = useState(null);
+    const [errors, setErrors] = useState(null);
+    const [filteredErrors, setFilteredErrors] = useState(null);
     const redirectTo = useNavigate();
     const username = useRef();
     const firstName = useRef();
@@ -15,30 +19,35 @@ function Register() {
     const email = useRef();
     const password = useRef();
     const confirmationPassword = useRef();
+
+    const filterErrors = () => {
+        if (errors) {
+            for (let i = 0; i < errors.length; i++) {
+                if (errors[i].msg === "Email is required") {
+                    for (let j = 0; j < errors.length; j++) {
+                        if (errors[j].msg === "Invalid email format") {
+                            errors.splice(j, 1);
+                            setFilteredErrors(errors);
+                        }
+                    }
+                } else {
+                    setFilteredErrors(errors);
+                }
+            }
+        }
+    };
     
-    const [validated, setValidated] = useState(false);
     
     const handleSubmit = (event) => {
-
         event.preventDefault();
-        if (password.current.value !== confirmationPassword.current.value) {
-            console.log("nein");
-        }
-        const form = event.currentTarget;
-        if (form.checkValidity() === false) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
-        setValidated(true);
-
         if (imgDataURL) {
             uploadPicture();
         } else {
             register();
-        }
+        };
     };
 
-    const register = async (profileImg) => {
+    const register = async (profileImg, img_id) => {
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
         
@@ -48,14 +57,20 @@ function Register() {
         urlencoded.append("lastName", lastName.current.value);
         urlencoded.append("email", email.current.value);
         urlencoded.append("password", password.current.value);
+        urlencoded.append("password_confirmation", confirmationPassword.current.value);
         urlencoded.append("profilePic", profileImg ? profileImg : "");
+        urlencoded.append("img_id", img_id ? img_id : "");
         
         const requestOptions = { method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow" };
         try {
             const response = await fetch("http://localhost:5000/register", requestOptions);
             const result = await response.json();
-            console.log("result:", result);
-            redirectTo("/login");
+            if (result.errors) {
+                setErrors(result.errors);
+            } else {
+                alert("Registration successful!")
+                redirectTo("/login");
+            };            
         } catch (error) {
             console.log("error :>> ", error);
         };
@@ -69,11 +84,19 @@ function Register() {
         try {
             const response = await fetch("http://localhost:5000/users/imageupload", requestOptions);
             const result = await response.json();
-            register(result.image);
+            register(result.image, result.img_id);
         } catch (error) {
             console.log("error :>> ", error);
         };
     };
+
+    useEffect(() => {
+        filterErrors();
+    }, [errors]);
+
+    useEffect(() => {
+        checkIfUserIsLoggedIn();
+    }, []);
     
     useEffect(() => {
         let fileReader, isCancel = false;
@@ -103,46 +126,64 @@ function Register() {
               <br />
               <h1 style={{ textAlign: "center" }}>Register</h1>
               
-              <Form noValidate validated={validated} onSubmit={handleSubmit} style={{padding: "20px"}}>
+              <Form noValidate onSubmit={handleSubmit} style={{padding: "20px"}}>
                   <div className="formFlex">
                       <Form.Group className="mb-3" controlId="formBasicUsername">
                           <Form.Label>Username</Form.Label>
-                          <Form.Control type="text" placeholder="Enter username" name="username" ref={username} required />
-                          <Form.Control.Feedback type="invalid">
-                              Username already in use.
-                          </Form.Control.Feedback>
+                          <Form.Control type="text" placeholder="Enter username" name="username" ref={username} />
+                          {errors && errors.map((error, key) => {
+                              if (error.msg === "Username is required") {
+                                  return <p key={key} className="errorMessage">{error.msg}</p>
+                              } else if (error.msg === "Username already in use") {
+                                  return <p key={key} className="errorMessage">{error.msg}</p>
+                              };
+                          })}
                       </Form.Group>
                       <Form.Group className="mb-3" controlId="formBasicFirstName">
                           <Form.Label>First Name</Form.Label>
                           <Form.Control type="text" placeholder="Enter first name" name="firstName" ref={firstName} />
+                          {errors && errors.map((error, key) => {
+                              if (error.msg === "First name is required") {
+                                  return <p key={key} className="errorMessage">{error.msg}</p>
+                              };
+                          })}
                       </Form.Group>
                       <Form.Group className="mb-3" controlId="formBasicLastName">
                           <Form.Label>Last Name</Form.Label>
                           <Form.Control type="text" placeholder="Enter last name" name="lastName" ref={lastName} />
+                          {errors && errors.map((error, key) => {
+                              if (error.msg === "Last name is required") {
+                                  return <p key={key} className="errorMessage">{error.msg}</p>
+                              };
+                          })}
                       </Form.Group>
                       <Form.Group className="mb-3" controlId="formBasicEmail">
                           <Form.Label>Email</Form.Label>
-                          <Form.Control type="email" placeholder="Enter email" name="email" ref={email} required />
-                          <Form.Control.Feedback type="invalid">
-                              Email already in use.
-                          </Form.Control.Feedback>
-                          <Form.Control.Feedback type="invalid">
-                              Invalid email format.
-                          </Form.Control.Feedback>
+                          <Form.Control type="email" placeholder="Enter email" name="email" ref={email} />
+                          {filteredErrors && filteredErrors.map((error, key) => {
+                              if (error.msg === "Email is required") {
+                                  return <p key={key} className="errorMessage">{error.msg}</p>
+                              } if (error.msg === "Invalid email format") {
+                                  return <p key={key} className="errorMessage">{error.msg}</p>
+                              } else if (error.msg === "Email already in use") {
+                                  return <p key={key} className="errorMessage">{error.msg}</p>
+                              };
+                          })}
                       </Form.Group>
                       <Form.Group className="mb-3" controlId="formBasicPassword" >
                           <Form.Label>Password</Form.Label>
-                          <Form.Control type="password" placeholder="Enter password" name="password" ref={password} required />
-                          <Form.Control.Feedback type="invalid">
-                              Invalid password format.
-                          </Form.Control.Feedback>
+                          <Form.Control type="password" placeholder="Enter password" name="password" ref={password} />
+                          {errors && errors.map((error, key) => {
+                              if (error.msg === "Invalid password") {
+                                  return <p key={key} className="errorMessage">{error.msg}</p>
+                              } else if (error.msg === "Passwords don't match") {
+                                  return <p key={key} className="errorMessage">{error.msg}</p>
+                              };
+                          })}
                       </Form.Group>
                       <Form.Group className="mb-3" controlId="formBasicPasswordConfirmation">
                           <Form.Label>Password confirmation</Form.Label>
-                          <Form.Control type="password" placeholder="Confirm password" ref={confirmationPassword} required />
-                          <Form.Control.Feedback type="invalid">
-                              The passwords don't match.
-                          </Form.Control.Feedback>
+                          <Form.Control type="password" placeholder="Confirm password" ref={confirmationPassword} />
                       </Form.Group>
                       <Form.Group className="mb-3" controlId="formBasicFile">
                           <Form.Label>Profile picture (optional)</Form.Label>
@@ -151,7 +192,7 @@ function Register() {
                       {imgDataURL && <img src={imgDataURL} alt="img-preview" className="imgRegisterPreview" />}
                   </div>
                   <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                      <Form.Check type="checkbox" label="Check me out" />
+                      <Form.Check type="checkbox" label="Check me out" required />
                   </Form.Group>
                   <div className="formButton">
                     <Button variant="primary" type="submit">Register</Button>

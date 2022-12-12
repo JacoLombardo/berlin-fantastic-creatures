@@ -10,9 +10,10 @@ export const AuthContext = createContext();
 // 3. Create provider
 export const AuthContextProvider = (props) => {
 
-  const [userLogin, setUserLogin] = useState({});
   const [isUser, setIsUser] = useState(false);
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [errors, setErrors] = useState(null);
   const email = useRef();
   const password = useRef();
   const redirectTo = useNavigate();
@@ -26,25 +27,23 @@ export const AuthContextProvider = (props) => {
     urlencoded.append("email", email.current.value);
     urlencoded.append("password", password.current.value);
 
-    var requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: urlencoded,
-      redirect: "follow",
-    };
+    var requestOptions = { method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow" };
     try {
       const response = await fetch(
         "http://localhost:5000/users/login",
         requestOptions
       );
       const result = await response.json();
-      console.log("result :>> ", result);
+      if (result.errors) {
+        setErrors(result.errors);
+      };
       const { token, user } = result;
       if (token) {
         localStorage.setItem("token", token);
         setIsUser(true);
+        setErrors(null);
         setUser(user);
-        redirectTo("/");
+        redirectTo("/profile");
       }
     } catch (error) {
       console.log("error", error);
@@ -61,9 +60,6 @@ export const AuthContextProvider = (props) => {
   const getPersonalProfile = async () => {
 
     const token = getToken();
-    if (!token) {
-      alert("You need to log in")
-    }
     const myHeaders = new Headers();
     myHeaders.append("Authorization", `Bearer ${token}`);
 
@@ -73,7 +69,7 @@ export const AuthContextProvider = (props) => {
       const result = await response.json();
       setUser(result.user);
     } catch (error) {
-      console.log("error getting profile", error);
+      console.log("Error getting profile", error);
     }
   };
 
@@ -81,10 +77,13 @@ export const AuthContextProvider = (props) => {
     const token = localStorage.getItem("token");
     if (token) {
       console.log("User is logged in");
+      getPersonalProfile();
       setIsUser(true);
+      setLoading(false);
     } else {
       console.log("User is NOT logged in");
       setIsUser(false);
+      setLoading(false);
     }
   };
 
@@ -92,10 +91,9 @@ export const AuthContextProvider = (props) => {
     checkIfUserIsLoggedIn();
   }, []);
 
-
   // 4. Move state and function
 
   return (
-    <AuthContext.Provider value={{ login, userLogin, setUserLogin, logout, isUser, user, setUser, getPersonalProfile, email, password }}>{props.children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ login, logout, isUser, user, setUser, getPersonalProfile, email, password, loading, errors, setErrors, checkIfUserIsLoggedIn }}>{props.children}</AuthContext.Provider>
   );
 };
