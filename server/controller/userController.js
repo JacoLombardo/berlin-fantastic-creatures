@@ -139,6 +139,10 @@ const loginUser = async (req, res) => {
     }
 };
 
+const loginWithGoogle = async (req, res) => {
+
+};
+
 const deleteUser = async (req, res) => {
     const { user } = req.body;
     try {
@@ -223,4 +227,4 @@ const imageDeleteUser = async (req, res) => {
     }
 };
 
-export {getAllUsers, registerUser, imageUploadUser, loginUser, getUserById, getProfile, updateUserInfo, deleteUser, imageDeleteUser};
+export { getAllUsers, registerUser, imageUploadUser, loginUser, getUserById, getProfile, updateUserInfo, deleteUser, imageDeleteUser, loginWithGoogle };

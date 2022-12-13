@@ -19,7 +19,7 @@ export const ContentContextProvider = (props) => {
     var requestOptions = { method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow" };
     try {
       const response = await fetch("http://localhost:5000/users/imagedelete", requestOptions);
-      const result = await response.json();
+      await response.json();
     } catch (error) {
       console.log("error :>> ", error);
     };
@@ -36,7 +36,7 @@ export const ContentContextProvider = (props) => {
     var requestOptions = { method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow" };
     try {
       const response = await fetch("http://localhost:5000/posts/likes", requestOptions);
-      const result = await response.json();
+      await response.json();
       alert("Post successfully liked!");
     } catch (error) {
       console.log("error :>> ", error);
@@ -54,7 +54,7 @@ export const ContentContextProvider = (props) => {
     var requestOptions = { method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow" };
     try {
       const response = await fetch("http://localhost:5000/posts/removelike", requestOptions);
-      const result = await response.json();
+      await response.json();
       alert("Like successfully removed!");
     } catch (error) {
       console.log("error :>> ", error);
@@ -72,7 +72,7 @@ export const ContentContextProvider = (props) => {
     var requestOptions = { method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow" };
     try {
       const response = await fetch("http://localhost:5000/posts/favourites", requestOptions);
-      const result = await response.json();
+      await response.json();
       alert("Post successfully added to favourites!");
     } catch (error) {
       console.log("error :>> ", error);
@@ -90,7 +90,7 @@ export const ContentContextProvider = (props) => {
     var requestOptions = { method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow" };
     try {
       const response = await fetch("http://localhost:5000/posts/remove", requestOptions);
-      const result = await response.json();
+      await response.json();
       alert("Post successfully removed from favourites!");
     } catch (error) {
       console.log("error :>> ", error);
@@ -108,7 +108,7 @@ export const ContentContextProvider = (props) => {
     var requestOptions = { method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow" };
     try {
       const response = await fetch("http://localhost:5000/comments/likes", requestOptions);
-      const result = await response.json();
+      await response.json();
       alert("Post successfully liked!");
       
     } catch (error) {
@@ -127,7 +127,7 @@ export const ContentContextProvider = (props) => {
     var requestOptions = { method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow" };
     try {
       const response = await fetch("http://localhost:5000/comments/removelike", requestOptions);
-      const result = await response.json();
+      await response.json();
       alert("Like successfully removed!");
     } catch (error) {
       console.log("error :>> ", error);

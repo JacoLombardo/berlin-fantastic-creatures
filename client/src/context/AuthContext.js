@@ -1,5 +1,5 @@
 // 1. Import hook
-import React, { createContext, useEffect, useRef, useState } from 'react';
+import React, { createContext, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import getToken from '../tools/getToken';
 
@@ -86,10 +86,6 @@ export const AuthContextProvider = (props) => {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    checkIfUserIsLoggedIn();
-  }, []);
 
   // 4. Move state and function
 

@@ -9,6 +9,7 @@ import * as dotenv from "dotenv";
 import cloudinaryConfig from './config/cloudinary.js';
 import passport from "passport";
 import passportConfig from './config/passport.js';
+import passportGoogleConfig from './config/passportGoggle.js';
 // loading .env file
 dotenv.config();
 
@@ -30,6 +31,7 @@ const addMiddleWares = () => {
   cloudinaryConfig();
   app.use(passport.initialize());
   passportConfig(passport);
+  passportGoogleConfig(passport);
 };
 
 const startServer = () => {

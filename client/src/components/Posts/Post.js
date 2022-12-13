@@ -71,7 +71,7 @@ function Post({ post, getPosts, category }) {
     var requestOptions = { method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow" };
     try {
       const response = await fetch("http://localhost:5000/posts/update", requestOptions);
-      const result = await response.json();
+      await response.json();
       getPosts(category);
     } catch (error) {
       console.log("error :>> ", error);
@@ -90,7 +90,7 @@ function Post({ post, getPosts, category }) {
     var requestOptions = { method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow" };
     try {
       const response = await fetch("http://localhost:5000/posts/delete", requestOptions);
-      const result = await response.json();
+      await response.json();
       alert("Post successfully deleted!");
       getPosts(category);
     } catch (error) {
@@ -173,7 +173,7 @@ function Post({ post, getPosts, category }) {
         <div className="postHeader">
           {post.author ? <img src={post.author.profilePic} alt="userpic" className="postUserPic"></img> : <img src={userPic} alt="userpic" className="postUserPic"></img>}
           <div>
-            {post.author && user && <div>
+            {post.author && user && <div className="postUsernameAction">
               <Link to={`user-${post.author._id}`} className="link"><h1 className="postUsername">{post.author.username}</h1></Link>
               {user && post.author.username === user.username && 
               <div className="actionIconsDiv">
@@ -190,7 +190,7 @@ function Post({ post, getPosts, category }) {
           </div>
         </div>
         {!showInput ? <p>{post.text}</p> :
-          <textarea className="postInputText" type="text" name="post-text" ref={text}></textarea>}
+          <textarea className="postInputText" type="text" name="post-text" ref={text} defaultValue={post.text} />}
         {showInput && <input className="postEditInput" type="file" accept="image/*" name="img" onChange={(event) => { setPreviewFile(event.target.files[0]) }} />}
         {!imgDataURL ? <img src={post.img} alt="post-img" className="imgPreview"></img> : <img src={imgDataURL} alt="post-pic" className="imgPreview" />}
         <div className="likesDiv">

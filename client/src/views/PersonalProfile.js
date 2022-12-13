@@ -11,6 +11,7 @@ import favourite from '../Images/icon/favourite.png';
 import post from '../Images/icon/post.png';
 import '../style/profile.style.css';
 import { ContentContext } from '../context/ContentContext';
+import Logo from '../components/Logo/Logo';
 
 function PersonalProfile() {
 
@@ -46,7 +47,7 @@ function PersonalProfile() {
     var requestOptions = { method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow" };
     try {
       const response = await fetch("http://localhost:5000/users/delete", requestOptions);
-      const result = await response.json();
+      await response.json();
       logout();
     } catch (error) {
       console.log("error :>> ", error);
@@ -63,14 +64,12 @@ function PersonalProfile() {
     } if (firstName.current) { urlencoded.append("firstName", firstName.current.value);
     } if (lastName.current) { urlencoded.append("lastName", lastName.current.value);
     } if (bio.current) { urlencoded.append("bio", bio.current.value);
-    } if (email.current) {
-      urlencoded.append("email", email.current.value);
-    } if (password.current) {
-      urlencoded.append("password", password.current.value);
+    } if (email.current) { urlencoded.append("email", email.current.value);
+    } if (password.current) { urlencoded.append("password", password.current.value);
     } if (profilePic) {
       urlencoded.append("profilePic", profilePic);
       urlencoded.append("img_id", img_id)
-    }
+    };
     
     var requestOptions = { method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow" };
     try {
@@ -131,136 +130,139 @@ function PersonalProfile() {
   return (
   <>
     <NavBar />
-      <br /><br />
-      <div className="profileDiv">
-        <h1 className="profileTitle">My Personal Profile</h1>
-        <div>
-          <div className="profileImgDiv">
-            {!showInput6 ? <Link onClick={() => { setShowInput6(true) }}><img className="changeIconImg" src={change} alt="change" title="Change your profile picture"></img></Link>
-              :
-              <div className="backSubmitDiv">
-                <Link onClick={() => {setImgDataURL(null); setShowInput6(false)}}><img className="changeIconImg1" src={back} alt="change" title="Discard your change"></img></Link>
-                <Link onClick={() => {uploadPicture(); setShowInput6(false)}}><img className="changeIconImg1" src={submit} alt="change" title="Submit your change"></img></Link>
-              </div>}
-            {imgDataURL ? <img src={imgDataURL} alt="post-pic" className="profilePic" /> : <img src={user.profilePic} alt="profile-pic" className="profilePic" />}
-            {showInput6 && <input className="profileImgInput" type="file" accept="image/*" name="img" onChange={(event) => {setPreviewFile(event.target.files[0])}} />}
-            {!showInput6 && user.profilePic === blankPic && <p style={{fontStyle: "italic"}}>Add a profile picture!</p>}
-          </div>
+      <br />
+      {user ?
+        <div className="profileDiv">
+          <h1 className="profileTitle">My Personal Profile</h1>
           <div>
-          <div className="profileInfo">
-              <div>
-                <h1 className="infoH">Username:</h1>
-                <div className="actionIconsDiv">
-                  <div className="profileMessageError">
-                    {!showInput1 ? <p>{user.username}</p>
-                      : <input className="profileInput" type="text" name="username" ref={username}></input>}
-                  {errors && errors.msg === "Username already in use" && <p className="errorMessage">{errors.msg}</p>}
-              </div>
-                  {!showInput1 ? <Link onClick={() => { setShowInput1(true) }}><img className="changeIcon" src={change} alt="change" title="Change your username"></img></Link>
-                    :
-                    <div>
-                      <Link onClick={() => { setShowInput1(false)}}><img className="changeIcon" src={back} alt="change" title="Discard your change"></img></Link>
-                      <Link onClick={() => { submitChange()}}><img className="changeIcon" src={submit} alt="change" title="Submit your change"></img></Link>
-                    </div>}
-                </div>
-                </div>
-              <div>
-                <h1 className="infoH">First Name:</h1>
-              <div className="actionIconsDiv">{!showInput2 ? <p>{user.firstName}</p> : <input className="profileInput" type="text" name="firstName" ref={firstName}></input>}
-                  {!showInput2 ? <Link onClick={() => { setShowInput2(true) }}><img className="changeIcon" src={change} alt="change" title="Change your first name"></img></Link>
-                    :
-                    <div>
-                      <Link onClick={() => { setShowInput2(false)}}><img className="changeIcon" src={back} alt="change" title="Discard your change"></img></Link>
-                      <Link onClick={() => { submitChange(); setShowInput2(false)}}><img className="changeIcon" src={submit} alt="change" title="Submit your change"></img></Link>
-                    </div>}
-                </div>
-              </div>
-              <div>
-                <h1 className="infoH">Last Name:</h1>
-              <div className="actionIconsDiv">{!showInput3 ? <p>{user.lastName}</p> : <input className="profileInput" type="text" name="lastName" ref={lastName}></input>}
-                  {!showInput3 ? <Link onClick={() => { setShowInput3(true) }}><img className="changeIcon" src={change} alt="change" title="Change your last name"></img></Link>
-                    :
-                    <div>
-                      <Link onClick={() => { setShowInput3(false)}}><img className="changeIcon" src={back} alt="change" title="Discard your change"></img></Link>
-                      <Link onClick={() => { submitChange(); setShowInput3(false)}}><img className="changeIcon" src={submit} alt="change" title="Submit your change"></img></Link>
-                    </div>}
-                </div>
-              </div>
-              <div>
-                <h1 className="infoH">Email:</h1>
-                <div className="actionIconsDiv">
-                  <div className="profileMessageError">
-                    {!showInput4 ? <p>{user.email}</p> : <input className="profileInput" type="email" name="email" ref={email}></input>}
-                    {errors && errors.msg === "Email already in use" && <p className="errorMessage">{errors.msg}</p>}
-                  </div>
-                  {!showInput4 ? <Link onClick={() => { setShowInput4(true) }}><img className="changeIcon" src={change} alt="change" title="Change your email"></img></Link>
-                    :
-                    <div>
-                      <Link onClick={() => { setShowInput4(false)}}><img className="changeIcon" src={back} alt="change" title="Discard your change"></img></Link>
-                      <Link onClick={() => { submitChange()}}><img className="changeIcon" src={submit} alt="change" title="Submit your change"></img></Link>
-                    </div>}
-                </div>
-              </div>
-              <div>
-                <h1 className="infoH">Password:</h1>
-              <div className="actionIconsDiv">{!showInput5 ? <p>●●●●●●</p> : <input className="profileInput" type="password" name="password" ref={password}></input>}
-                  {!showInput5 ? <Link onClick={() => { setShowInput5(true) }}><img className="changeIcon" src={change} alt="change" title="Change your password"></img></Link>
-                    :
-                    <div>
-                      <Link onClick={() => { setShowInput5(false)}}><img className="changeIcon" src={back} alt="change" title="Discard your change"></img></Link>
-                      <Link onClick={() => { submitChange(); setShowInput5(false)}}><img className="changeIcon" src={submit} alt="change" title="Submit your change"></img></Link>
-                    </div>}
-                </div>
-              </div>
-          </div>
-          <div className="profileInfo">
-              {user.bio ?
-                <div className="profileImgDiv">
-                  <div className="bioIconDiv">
-                    <h1 className="infoH">Your bio</h1>
-                    {!showInput7 ? <Link onClick={() => { setShowInput7(true) }}><img className="changeIcon" src={change} alt="change" title="Change your bio"></img></Link>
-                      : 
-                      <div>
-                        <Link onClick={() => { setShowInput7(false) }}><img className="changeIcon" src={back} alt="change" title="Discard your change"></img></Link>
-                        <Link onClick={() => { submitChange(); setShowInput7(false) }}><img className="changeIcon" src={submit} alt="change" title="Submit your change"></img></Link>
-                    </div>}
-                  </div>
-                  {showInput7 ? <textarea className="bioInputText" type="text" name="bio-text" ref={bio} />
-                    : <p className="profileBio">{user.bio}</p>}
-                </div>
+            <div className="profileImgDiv">
+              {!showInput6 ? <Link onClick={() => { setShowInput6(true) }}><img className="changeIconImg" src={change} alt="change" title="Change your profile picture"></img></Link>
                 :
-                <div className="profileImgDiv">
-                  <div className="bioIconDiv">
-                    <p style={{fontStyle: "italic"}}>You have no bio yet, add one!</p>
-                    {!showInput7 ? <Link onClick={() => { setShowInput7(true) }}><img className="changeIcon" src={change} alt="change" title="Add a bio"></img></Link>
+                <div className="backSubmitDiv">
+                  <Link onClick={() => { setImgDataURL(null); setShowInput6(false) }}><img className="changeIconImg1" src={back} alt="change" title="Discard your change"></img></Link>
+                  <Link onClick={() => { uploadPicture(); setShowInput6(false) }}><img className="changeIconImg1" src={submit} alt="change" title="Submit your change"></img></Link>
+                </div>}
+              {imgDataURL ? <img src={imgDataURL} alt="post-pic" className="profilePic" /> : <img src={user.profilePic} alt="profile-pic" className="profilePic" />}
+              {showInput6 && <input className="profileImgInput" type="file" accept="image/*" name="img" onChange={(event) => { setPreviewFile(event.target.files[0]) }} />}
+              {!showInput6 && user.profilePic === blankPic && <p style={{ fontStyle: "italic" }}>Add a profile picture!</p>}
+            </div>
+            <div>
+              <div className="profileInfo">
+                <div>
+                  <h1 className="infoH">Username:</h1>
+                  <div className="actionIconsDiv">
+                    <div className="profileMessageError">
+                      {!showInput1 ? <p>{user.username}</p>
+                        : <input className="profileInput" type="text" name="username" ref={username} defaultValue={user.username}></input>}
+                      {errors && errors.msg === "Username already in use" && <p className="errorMessage">{errors.msg}</p>}
+                    </div>
+                    {!showInput1 ? <Link onClick={() => { setShowInput1(true) }}><img className="changeIcon" src={change} alt="change" title="Change your username"></img></Link>
                       :
                       <div>
-                        <Link onClick={() => { setShowInput7(false) }}><img className="changeIcon" src={back} alt="change" title="Discard your change"></img></Link>
-                        <Link onClick={() => { submitChange(); setShowInput7(false) }}><img className="changeIcon" src={submit} alt="change" title="Submit your change"></img></Link>
-                    </div>}
+                        <Link onClick={() => { setShowInput1(false) }}><img className="changeIcon" src={back} alt="change" title="Discard your change"></img></Link>
+                        <Link onClick={() => { submitChange() }}><img className="changeIcon" src={submit} alt="change" title="Submit your change"></img></Link>
+                      </div>}
                   </div>
-                  {showInput7 && <textarea className="bioInputText" type="text" name="bio-text" ref={bio} />}
-                </div>}
-          </div>
-          </div>
-          <div className="profilePosts">
-            <div className="profileIconDiv">
-              <img src={post} alt="favourites" className="profileMetaIcon" />
-              <h1 className="infoH">Your posts:</h1>
+                </div>
+                <div>
+                  <h1 className="infoH">First Name:</h1>
+                  <div className="actionIconsDiv">{!showInput2 ? <p>{user.firstName}</p> : <input className="profileInput" type="text" name="firstName" ref={firstName} defaultValue={user.firstName}></input>}
+                    {!showInput2 ? <Link onClick={() => { setShowInput2(true) }}><img className="changeIcon" src={change} alt="change" title="Change your first name"></img></Link>
+                      :
+                      <div>
+                        <Link onClick={() => { setShowInput2(false) }}><img className="changeIcon" src={back} alt="change" title="Discard your change"></img></Link>
+                        <Link onClick={() => { submitChange(); setShowInput2(false) }}><img className="changeIcon" src={submit} alt="change" title="Submit your change"></img></Link>
+                      </div>}
+                  </div>
+                </div>
+                <div>
+                  <h1 className="infoH">Last Name:</h1>
+                  <div className="actionIconsDiv">{!showInput3 ? <p>{user.lastName}</p> : <input className="profileInput" type="text" name="lastName" ref={lastName} defaultValue={user.lastName}></input>}
+                    {!showInput3 ? <Link onClick={() => { setShowInput3(true) }}><img className="changeIcon" src={change} alt="change" title="Change your last name"></img></Link>
+                      :
+                      <div>
+                        <Link onClick={() => { setShowInput3(false) }}><img className="changeIcon" src={back} alt="change" title="Discard your change"></img></Link>
+                        <Link onClick={() => { submitChange(); setShowInput3(false) }}><img className="changeIcon" src={submit} alt="change" title="Submit your change"></img></Link>
+                      </div>}
+                  </div>
+                </div>
+                <div>
+                  <h1 className="infoH">Email:</h1>
+                  <div className="actionIconsDiv">
+                    <div className="profileMessageError">
+                      {!showInput4 ? <p>{user.email}</p> : <input className="profileInput" type="email" name="email" ref={email} defaultValue={user.email}></input>}
+                      {errors && errors.msg === "Email already in use" && <p className="errorMessage">{errors.msg}</p>}
+                    </div>
+                    {!showInput4 ? <Link onClick={() => { setShowInput4(true) }}><img className="changeIcon" src={change} alt="change" title="Change your email"></img></Link>
+                      :
+                      <div>
+                        <Link onClick={() => { setShowInput4(false) }}><img className="changeIcon" src={back} alt="change" title="Discard your change"></img></Link>
+                        <Link onClick={() => { submitChange() }}><img className="changeIcon" src={submit} alt="change" title="Submit your change"></img></Link>
+                      </div>}
+                  </div>
+                </div>
+                <div>
+                  <h1 className="infoH">Password:</h1>
+                  <div className="actionIconsDiv">{!showInput5 ? <p>●●●●●●</p> : <input className="profileInput" type="password" name="password" ref={password}></input>}
+                    {!showInput5 ? <Link onClick={() => { setShowInput5(true) }}><img className="changeIcon" src={change} alt="change" title="Change your password"></img></Link>
+                      :
+                      <div>
+                        <Link onClick={() => { setShowInput5(false) }}><img className="changeIcon" src={back} alt="change" title="Discard your change"></img></Link>
+                        <Link onClick={() => { submitChange(); setShowInput5(false) }}><img className="changeIcon" src={submit} alt="change" title="Submit your change"></img></Link>
+                      </div>}
+                  </div>
+                </div>
+              </div>
+              <div className="profileInfo">
+                {user.bio ?
+                  <div className="profileImgDiv">
+                    <div className="bioIconDiv">
+                      <h1 className="infoH">Your bio</h1>
+                      {!showInput7 ? <Link onClick={() => { setShowInput7(true) }}><img className="changeIcon" src={change} alt="change" title="Change your bio"></img></Link>
+                        :
+                        <div>
+                          <Link onClick={() => { setShowInput7(false) }}><img className="changeIcon" src={back} alt="change" title="Discard your change"></img></Link>
+                          <Link onClick={() => { submitChange(); setShowInput7(false) }}><img className="changeIcon" src={submit} alt="change" title="Submit your change"></img></Link>
+                        </div>}
+                    </div>
+                    {showInput7 ? <textarea className="bioInputText" type="text" name="bio-text" ref={bio} defaultValue={user.bio} />
+                      : <p className="profileBio">{user.bio}</p>}
+                  </div>
+                  :
+                  <div className="profileImgDiv">
+                    <div className="bioIconDiv">
+                      <p style={{ fontStyle: "italic" }}>You have no bio yet, add one!</p>
+                      {!showInput7 ? <Link onClick={() => { setShowInput7(true) }}><img className="changeIcon" src={change} alt="change" title="Add a bio"></img></Link>
+                        :
+                        <div>
+                          <Link onClick={() => { setShowInput7(false) }}><img className="changeIcon" src={back} alt="change" title="Discard your change"></img></Link>
+                          <Link onClick={() => { submitChange(); setShowInput7(false) }}><img className="changeIcon" src={submit} alt="change" title="Submit your change"></img></Link>
+                        </div>}
+                    </div>
+                    {showInput7 && <textarea className="bioInputText" type="text" name="bio-text" ref={bio} />}
+                  </div>}
+              </div>
             </div>
-            <PersonalPosts userId={user._id} />
-          </div>
-          <div className="profileFav">
-            <div className="profileIconDiv">
-              <img src={favourite} alt="favourites" className="profileMetaIcon" />
-              <h1 className="infoH">Your favourites:</h1>
+            <div className="profilePosts">
+              <div className="profileIconDiv">
+                <img src={post} alt="favourites" className="profileMetaIcon" />
+                <h1 className="infoH">Your posts:</h1>
+              </div>
+              <PersonalPosts userId={user._id} />
             </div>
-            <Favourites user={user} />
+            <div className="profileFav">
+              <div className="profileIconDiv">
+                <img src={favourite} alt="favourites" className="profileMetaIcon" />
+                <h1 className="infoH">Your favourites:</h1>
+              </div>
+              <Favourites user={user} />
+            </div>
           </div>
+          <br /><br />
+          <button className="deleteButton" onClick={deleteAccount}>Delete account</button>
         </div>
-        <br /><br />
-        <button className="deleteButton" onClick={deleteAccount}>Delete account</button>
-      </div>
+        :
+        <Logo />}
       </>
   )
 }

@@ -1,8 +1,9 @@
 import express from 'express';
-import { deleteUser, getAllUsers, getProfile, getUserById, imageDeleteUser, imageUploadUser, loginUser, registerUser, updateUserInfo } from '../controller/userController.js';
+import { deleteUser, getAllUsers, getProfile, getUserById, imageDeleteUser, imageUploadUser, loginUser, loginWithGoogle, registerUser, updateUserInfo } from '../controller/userController.js';
 import jwtAuth from '../tools/jwtAuth.js';
 import multerUpload from '../tools/multer.js';
 import { body } from "express-validator";
+import googleAuth from '../tools/googleAuth.js';
 
 
 const router = express.Router();
@@ -25,6 +26,7 @@ router.get('/profile', jwtAuth, getProfile);
 router.post('/register', validation, registerUser);
 router.post('/update', updateUserInfo);
 router.post('/login', loginUser);
+router.post('/googlelogin', googleAuth, loginWithGoogle);
 router.post('/delete', deleteUser);
 router.post('/imageupload', multerUpload.single("image"), imageUploadUser);
 router.post('/imagedelete', imageDeleteUser);

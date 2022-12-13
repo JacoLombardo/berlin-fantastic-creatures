@@ -1,7 +1,7 @@
 /* Content */
 
 .contentDiv {
-    background-color: bisque;
+    background-color: #9ED5C5;
     border: 2px solid black;
     border-radius: 10px;
     margin-left: auto;
@@ -25,6 +25,9 @@
     }
     .imgPreview {
         width: 640px;
+    }
+    .postUsernameAction{
+        width: 550px;
     }
 }
 
@@ -53,6 +56,9 @@
         display: flex;
         flex-direction: column;
     }
+    .postUsernameAction{
+        width: 250px;
+    }
 }
 
 .contentTitle {
@@ -67,7 +73,7 @@
 }
 
 .postDiv {
-    background-color: darkgray;
+    background-color: #BCEAD5;
     border-radius: 10px;
     margin-left: auto;
     margin-right: auto;
@@ -135,12 +141,11 @@ div.postDiv>form>div:last-child {
     align-items: flex-start;
 }
 
-div.postHeader>div> :nth-child(1) {
+.postUsernameAction{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-start;
-    width: 550px;
 }
 
 .deleteIconPost {

@@ -35,7 +35,7 @@ function Profiles() {
     <>
     {user && id === user._id && <Navigate to="/profile" />}
     <NavBar />
-      <br /><br />
+      <br />
       {loading ? 
         <Logo />
         :

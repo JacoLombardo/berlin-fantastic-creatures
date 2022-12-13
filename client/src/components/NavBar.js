@@ -12,7 +12,7 @@ function NavBar() {
 
   return (
     <>
-      <Navbar bg="light" expand="lg">
+      <Navbar expand="lg" className="NavBar" style={{backgroundColor: "#DEF5E5"}}>
         <Container>
           <Navbar.Brand as={Link} to="/"><img className="logoNav" src={Logo} alt="logo" /></Navbar.Brand>
           <Navbar.Brand as={Link} to="/">Berlin Fantastic Creatures</Navbar.Brand>

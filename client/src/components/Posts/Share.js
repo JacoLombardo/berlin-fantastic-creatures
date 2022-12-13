@@ -27,7 +27,7 @@ function Share({ ubahn, city, getPosts }) {
     const requestOptions = { method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow" };
     try {
       const response = await fetch("http://localhost:5000/posts/share", requestOptions);
-      const result = await response.json();
+      await response.json();
       alert("Post successfully shared!");
       if (ubahn) {
         getPosts(ubahn);

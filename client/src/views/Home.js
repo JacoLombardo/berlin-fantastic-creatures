@@ -7,8 +7,7 @@ import '../style/style.css';
 function Home() {
 
     const { checkIfUserIsLoggedIn } = useContext(AuthContext);
-
-
+    
     useEffect(() => {
         checkIfUserIsLoggedIn();
     }, []);
@@ -21,6 +20,7 @@ function Home() {
               <p style={{color: "white", textAlign: "center"}}>Welcome to Berlin Fantastic Creatures!</p>
               <p style={{color: "white", textAlign: "center"}}>Share with all our users the magical you see everyday walking the streets of Berlin.</p>
           </div>
+          
       </>
   )
 }

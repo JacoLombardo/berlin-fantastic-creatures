@@ -39,7 +39,7 @@ function Comment({ comment, postId, getComments }) {
     var requestOptions = { method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow" };
     try {
       const response = await fetch("http://localhost:5000/comments/update", requestOptions);
-      const result = await response.json();
+      await response.json();
       getComments(postId);
     } catch (error) {
       console.log("error :>> ", error);
@@ -64,7 +64,7 @@ function Comment({ comment, postId, getComments }) {
     var requestOptions = { method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow" };
     try {
       const response = await fetch("http://localhost:5000/comments/delete", requestOptions);
-      const result = await response.json();
+      await response.json();
       alert("Comment successfully deleted!");
       getComments(postId);
     } catch (error) {
@@ -93,7 +93,7 @@ function Comment({ comment, postId, getComments }) {
           <div className="commentHeader">
             <Link to={`user-${comment.author._id}`} className="link"><h1 className="commentUsername">{comment.author.username}</h1></Link>
               <div className="actionIconsDiv">
-                <p>{comment.date}</p>
+                <p className="commentDate">{comment.date}</p>
               {user && comment.author.username === user.username && <div>
                 {!showInput ? <Link onClick={() => { setShowInput(true) }}><img src={change} alt="change" title="Edit your comment" className="changeIconComment"></img></Link>
                   :
@@ -106,7 +106,7 @@ function Comment({ comment, postId, getComments }) {
               </div>
           </div>
           {!showInput ? <p>{comment.text}</p> :
-            <textarea className="commentInput" type="text" name="comment-text" ref={text} onKeyUp={onKeyUp}></textarea>}
+            <textarea className="commentInput" type="text" name="comment-text" ref={text} onKeyUp={onKeyUp} defaultValue={comment.text} />}
           <div className="likesDivComment">
             {!like ? <Link onClick={() => { submitLikeComment(); setLike(true) }}><img src={Like} alt="like" title="Like the comment!" className="metaIconComment" /></Link>
             :
