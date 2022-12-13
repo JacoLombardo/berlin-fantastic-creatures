@@ -13,7 +13,7 @@ function City() {
 
   const getPosts = async (url) => {
     try {
-      const response = await fetch(`http://localhost:5000/posts/${url}`);
+      const response = await fetch(`http://localhost:5000/api/posts/${url}`);
       const result = await response.json();
       setPosts(result);
     } catch (error) {

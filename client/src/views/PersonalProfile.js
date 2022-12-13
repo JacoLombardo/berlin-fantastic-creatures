@@ -46,7 +46,7 @@ function PersonalProfile() {
     urlencoded.append("user", user._id);
     var requestOptions = { method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow" };
     try {
-      const response = await fetch("http://localhost:5000/users/delete", requestOptions);
+      const response = await fetch("http://localhost:5000/api/users/delete", requestOptions);
       await response.json();
       logout();
     } catch (error) {
@@ -73,7 +73,7 @@ function PersonalProfile() {
     
     var requestOptions = { method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow" };
     try {
-      const response = await fetch("http://localhost:5000/users/update", requestOptions);
+      const response = await fetch("http://localhost:5000/api/users/update", requestOptions);
       const result = await response.json();
       if (result.errors) {
         setErrors(result.errors);
@@ -94,7 +94,7 @@ function PersonalProfile() {
 
     const requestOptions = { method: "POST", body: formdata, redirect: "follow" };
     try {
-      const response = await fetch("http://localhost:5000/users/imageupload", requestOptions);
+      const response = await fetch("http://localhost:5000/api/users/imageupload", requestOptions);
       const result = await response.json();
       deleteImage(user.img_id);
       submitChange(result.image, result.img_id);

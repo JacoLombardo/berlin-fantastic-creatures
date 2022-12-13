@@ -10,7 +10,7 @@ import cloudinaryConfig from './config/cloudinary.js';
 import passport from "passport";
 import passportConfig from './config/passport.js';
 import passportGoogleConfig from './config/passportGoggle.js';
-// loading .env file
+
 dotenv.config();
 
 const app = express();
@@ -42,10 +42,10 @@ const startServer = () => {
 };
 
 const loadRoutes = () => {
-  app.use("/", router);
-  app.use("/users", userRoute);
-  app.use("/posts", postRoute);
-  app.use("/comments", commentRoute);
+  app.use("/api", router);
+  app.use("/api/users", userRoute);
+  app.use("/api/posts", postRoute);
+  app.use("/api/comments", commentRoute);
 };
 
 const mongoDBConnection = async () => {

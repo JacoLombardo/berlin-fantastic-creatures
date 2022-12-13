@@ -4,15 +4,6 @@ import User from '../model/userModel.js';
 import { ObjectId } from 'mongodb';
 import Comment from '../model/commentModel.js';
 
-const getAllPosts = async (req, res) => {
-    try {
-        const allPosts = await Post.find({}).populate({path: 'author', select: 'username'}).populate({path: 'comments', select: ['author', 'date', 'text']});
-        res.json(allPosts);
-    } catch (error) {
-        console.log('error :>> ', error);
-    }
-};
-
 const getPostsUbahn = async (req, res) => {
     try {
       const postsUbahn = await Post.find({ category: "ubahn" }).populate({ path: 'author', select: ['username', 'profilePic'] }).populate({ path: 'comments'}).populate({path: 'favourited', select: ['username', 'profilePic']}).populate({path: 'likes', select: ['username', 'profilePic']});
@@ -262,4 +253,4 @@ const imageUploadPosts = async (req, res) => {
   }
 };
 
-export { getAllPosts, getPostsUbahn, getPostsCity, imageUploadPosts, sharePost, getPostsByAuthor, deletePost, favPost, removeFav, likePost, removeLike, getPostById, updatePost };
+export { getPostsUbahn, getPostsCity, imageUploadPosts, sharePost, getPostsByAuthor, deletePost, favPost, removeFav, likePost, removeLike, getPostById, updatePost };

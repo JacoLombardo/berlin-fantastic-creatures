@@ -1,11 +1,10 @@
 import express from 'express';
-import { deletePost, favPost, getAllPosts, getPostById, getPostsByAuthor, getPostsCity, getPostsUbahn, imageUploadPosts, likePost, removeFav, removeLike, sharePost, updatePost } from '../controller/postController.js';
+import { deletePost, favPost, getPostById, getPostsByAuthor, getPostsCity, getPostsUbahn, imageUploadPosts, likePost, removeFav, removeLike, sharePost, updatePost } from '../controller/postController.js';
 import multerUpload from '../tools/multer.js';
 
 
 const router = express.Router();
 
-router.get('/all', getAllPosts);
 router.get('/ubahn', getPostsUbahn);
 router.get('/city', getPostsCity);
 router.get('/personal', getPostsByAuthor);

@@ -17,7 +17,7 @@ function Profiles() {
 
   const getProfile = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/users/user?_id=${id}`);
+      const response = await fetch(`http://localhost:5000/api/users/user?_id=${id}`);
       const result = await response.json();
       setProfile(result);
       setLoading(false);

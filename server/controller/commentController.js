@@ -1,16 +1,6 @@
 import Comment from '../model/commentModel.js';
-import { v2 as cloudinary } from 'cloudinary';
 import { ObjectId } from 'mongodb';
 import Post from '../model/postModel.js';
-
-const getAllComments = async (req, res) => {
-    try {
-        const allComments = await Comment.find({}).populate({path: 'author', select: 'username'}).populate({path: 'post', select: ['author', 'date', 'text']});
-        res.json(allComments);
-    } catch (error) {
-        console.log('error :>> ', error);
-    }
-};
 
 const getCommentsByPostId = async (req, res) => {
   let query = req.query
@@ -133,4 +123,4 @@ const removeLike = async (req, res) => {
 };
 
 
-export {getAllComments, getCommentsByPostId, deleteComment, shareComment, likeComment, removeLike, updateComment};
+export { getCommentsByPostId, deleteComment, shareComment, likeComment, removeLike, updateComment };

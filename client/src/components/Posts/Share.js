@@ -26,7 +26,7 @@ function Share({ ubahn, city, getPosts }) {
     setPreviewFile(null);
     const requestOptions = { method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow" };
     try {
-      const response = await fetch("http://localhost:5000/posts/share", requestOptions);
+      const response = await fetch("http://localhost:5000/api/posts/share", requestOptions);
       await response.json();
       alert("Post successfully shared!");
       if (ubahn) {
@@ -45,7 +45,7 @@ function Share({ ubahn, city, getPosts }) {
 
     const requestOptions = { method: "POST", body: formdata, redirect: "follow" };
     try {
-      const response = await fetch("http://localhost:5000/posts/imageupload", requestOptions);
+      const response = await fetch("http://localhost:5000/api/posts/imageupload", requestOptions);
       const result = await response.json();
       sharePost(result.image, result.img_id);
     } catch (error) {

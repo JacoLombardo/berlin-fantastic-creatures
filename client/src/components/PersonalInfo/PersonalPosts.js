@@ -7,7 +7,7 @@ function PersonalPosts({userId}) {
 
     const getPosts = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/posts/personal?author=${userId}`);
+            const response = await fetch(`http://localhost:5000/api/posts/personal?author=${userId}`);
             const result = await response.json();
             setPosts(result);
         } catch (error) {

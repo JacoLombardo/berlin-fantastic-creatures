@@ -30,7 +30,7 @@ export const AuthContextProvider = (props) => {
     var requestOptions = { method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow" };
     try {
       const response = await fetch(
-        "http://localhost:5000/users/login",
+        "http://localhost:5000/api/users/login",
         requestOptions
       );
       const result = await response.json();
@@ -65,7 +65,7 @@ export const AuthContextProvider = (props) => {
 
     const requestOptions = {method: "GET", headers: myHeaders, redirect: "follow"};
     try {
-      const response = await fetch("http://localhost:5000/users/profile", requestOptions);
+      const response = await fetch("http://localhost:5000/api/users/profile", requestOptions);
       const result = await response.json();
       setUser(result.user);
     } catch (error) {
