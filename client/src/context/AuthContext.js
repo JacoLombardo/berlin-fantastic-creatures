@@ -17,7 +17,8 @@ export const AuthContextProvider = (props) => {
   const email = useRef();
   const password = useRef();
   const redirectTo = useNavigate();
-  const server = "http://localhost:5000";
+  // const server = "http://localhost:5000";
+  const server = "berlin-fantastic-creatures.vercel.app";
 
   const login = async () => {
 
