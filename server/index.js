@@ -42,6 +42,14 @@ const startServer = () => {
 };
 
 const loadRoutes = () => {
+  app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "http://berlin-fantastic-creatures-server.vercel.app");
+    res.header(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept"
+    );
+    next();
+  });
   app.use("/api", router);
   app.use("/api/users", userRoute);
   app.use("/api/posts", postRoute);
