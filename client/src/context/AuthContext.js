@@ -17,6 +17,7 @@ export const AuthContextProvider = (props) => {
   const email = useRef();
   const password = useRef();
   const redirectTo = useNavigate();
+  const server = "http://localhost:5000";
 
   const login = async () => {
 
@@ -30,7 +31,7 @@ export const AuthContextProvider = (props) => {
     var requestOptions = { method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow" };
     try {
       const response = await fetch(
-        "http://localhost:5000/api/users/login",
+        `${server}/api/users/login`,
         requestOptions
       );
       const result = await response.json();
@@ -65,7 +66,7 @@ export const AuthContextProvider = (props) => {
 
     const requestOptions = {method: "GET", headers: myHeaders, redirect: "follow"};
     try {
-      const response = await fetch("http://localhost:5000/api/users/profile", requestOptions);
+      const response = await fetch(`${server}/api/users/profile`, requestOptions);
       const result = await response.json();
       setUser(result.user);
     } catch (error) {
@@ -90,6 +91,6 @@ export const AuthContextProvider = (props) => {
   // 4. Move state and function
 
   return (
-    <AuthContext.Provider value={{ login, logout, isUser, user, setUser, getPersonalProfile, email, password, loading, errors, setErrors, checkIfUserIsLoggedIn }}>{props.children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ login, logout, isUser, user, setUser, getPersonalProfile, email, password, loading, errors, setErrors, checkIfUserIsLoggedIn, server }}>{props.children}</AuthContext.Provider>
   );
 };

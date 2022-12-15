@@ -1,5 +1,6 @@
 // 1. Import hook
-import React, { createContext } from 'react';
+import React, { createContext, useContext } from 'react';
+import { AuthContext } from './AuthContext';
 
 
 // 2. Create Context / Store
@@ -8,6 +9,8 @@ export const ContentContext = createContext();
 
 // 3. Create provider
 export const ContentContextProvider = (props) => {
+
+  const { server } = useContext(AuthContext);
 
   const deleteImage = async (img_id) => {
     var myHeaders = new Headers();
@@ -18,7 +21,7 @@ export const ContentContextProvider = (props) => {
     
     var requestOptions = { method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow" };
     try {
-      const response = await fetch("http://localhost:5000/api/users/imagedelete", requestOptions);
+      const response = await fetch(`${server}/api/users/imagedelete`, requestOptions);
       await response.json();
     } catch (error) {
       console.log("error :>> ", error);
@@ -35,7 +38,7 @@ export const ContentContextProvider = (props) => {
 
     var requestOptions = { method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow" };
     try {
-      const response = await fetch("http://localhost:5000/api/posts/likes", requestOptions);
+      const response = await fetch(`${server}/api/posts/likes`, requestOptions);
       await response.json();
       alert("Post successfully liked!");
     } catch (error) {
@@ -53,7 +56,7 @@ export const ContentContextProvider = (props) => {
 
     var requestOptions = { method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow" };
     try {
-      const response = await fetch("http://localhost:5000/api/posts/removelike", requestOptions);
+      const response = await fetch(`${server}/api/posts/removelike`, requestOptions);
       await response.json();
       alert("Like successfully removed!");
     } catch (error) {
@@ -71,7 +74,7 @@ export const ContentContextProvider = (props) => {
 
     var requestOptions = { method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow" };
     try {
-      const response = await fetch("http://localhost:5000/api/posts/favourites", requestOptions);
+      const response = await fetch(`${server}/api/posts/favourites`, requestOptions);
       await response.json();
       alert("Post successfully added to favourites!");
     } catch (error) {
@@ -89,7 +92,7 @@ export const ContentContextProvider = (props) => {
 
     var requestOptions = { method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow" };
     try {
-      const response = await fetch("http://localhost:5000/api/posts/remove", requestOptions);
+      const response = await fetch(`${server}/api/posts/remove`, requestOptions);
       await response.json();
       alert("Post successfully removed from favourites!");
     } catch (error) {
@@ -107,7 +110,7 @@ export const ContentContextProvider = (props) => {
 
     var requestOptions = { method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow" };
     try {
-      const response = await fetch("http://localhost:5000/api/comments/likes", requestOptions);
+      const response = await fetch(`${server}/api/comments/likes`, requestOptions);
       await response.json();
       alert("Post successfully liked!");
       
@@ -126,7 +129,7 @@ export const ContentContextProvider = (props) => {
 
     var requestOptions = { method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow" };
     try {
-      const response = await fetch("http://localhost:5000/api/comments/removelike", requestOptions);
+      const response = await fetch(`${server}/api/comments/removelike`, requestOptions);
       await response.json();
       alert("Like successfully removed!");
     } catch (error) {

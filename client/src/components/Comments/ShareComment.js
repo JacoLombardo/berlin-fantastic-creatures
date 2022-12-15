@@ -4,7 +4,7 @@ import moment from 'moment';
 
 function ShareComment({ postId, getComments }) {
     
-    const { user } = useContext(AuthContext);
+    const { user, server } = useContext(AuthContext);
     const text = useRef();
 
     const submitComment = (event) => {
@@ -26,7 +26,7 @@ function ShareComment({ postId, getComments }) {
 
         const requestOptions = { method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow" };
         try {
-            const response = await fetch("http://localhost:5000/api/comments/share", requestOptions);
+            const response = await fetch(`${server}/api/comments/share`, requestOptions);
             await response.json()
             text.current.value = "";
             alert("Comment successfully shared!");

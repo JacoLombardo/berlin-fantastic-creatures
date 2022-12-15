@@ -5,13 +5,13 @@ import Favourite from './Favourite';
 function Favourites() {
 
   const [favourites, setFavourites] = useState(null);
-  const { user } = useContext(AuthContext);
+  const { user, server } = useContext(AuthContext);
 
   const getFavourites = async (myFav) => {
     try {
       const favouritesArray = await Promise.all(
         myFav.map(async (id) => {
-          const responses = await fetch(`http://localhost:5000/api/posts/personal?_id=${id}`);
+          const responses = await fetch(`${server}/api/posts/personal?_id=${id}`);
           const results = await responses.json();
           return results;
         })

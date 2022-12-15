@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { AuthContext } from '../../context/AuthContext';
 import PersonalPost from './PersonalPost';
 
 function PersonalPosts({userId}) {
 
     const [posts, setPosts] = useState([]);
+    const { server } = useContext(AuthContext);
 
     const getPosts = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/api/posts/personal?author=${userId}`);
+            const response = await fetch(`${server}/api/posts/personal?author=${userId}`);
             const result = await response.json();
             setPosts(result);
         } catch (error) {

@@ -16,7 +16,7 @@ import { ContentContext } from '../../context/ContentContext';
 
 function Post({ post, getPosts, category }) {
 
-  const { user } = useContext(AuthContext);
+  const { user, server } = useContext(AuthContext);
   const { deleteImage, likePost, removeLike, addToFavourites, removeFromFavourites } = useContext(ContentContext);
   const [comments, setComments] = useState([]);
   const [fav, setFav] = useState(false);
@@ -70,7 +70,7 @@ function Post({ post, getPosts, category }) {
     
     var requestOptions = { method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow" };
     try {
-      const response = await fetch("http://localhost:5000/api/posts/update", requestOptions);
+      const response = await fetch(`${server}/api/posts/update`, requestOptions);
       await response.json();
       getPosts(category);
     } catch (error) {
@@ -89,7 +89,7 @@ function Post({ post, getPosts, category }) {
 
     var requestOptions = { method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow" };
     try {
-      const response = await fetch("http://localhost:5000/api/posts/delete", requestOptions);
+      const response = await fetch(`${server}/api/posts/delete`, requestOptions);
       await response.json();
       alert("Post successfully deleted!");
       getPosts(category);
@@ -118,7 +118,7 @@ function Post({ post, getPosts, category }) {
   const getComments = async (postId) => {
     let url = postId
     try {
-      const response = await fetch(`http://localhost:5000/api/comments/comment?post=${url}`);
+      const response = await fetch(`${server}/api/comments/comment?post=${url}`);
       const result = await response.json();
       setComments(result);
     } catch (error) {
@@ -132,7 +132,7 @@ function Post({ post, getPosts, category }) {
 
     const requestOptions = { method: "POST", body: formdata, redirect: "follow" };
     try {
-      const response = await fetch("http://localhost:5000/api/posts/imageupload", requestOptions);
+      const response = await fetch(`${server}/api/posts/imageupload`, requestOptions);
       const result = await response.json();
       deleteImage(post.img_id);
       submitChange(result.image, result.img_id);

@@ -11,7 +11,7 @@ import { ContentContext } from '../../context/ContentContext';
 
 function Comment({ comment, postId, getComments }) {
   
-  const { user } = useContext(AuthContext);
+  const { user, server } = useContext(AuthContext);
   const { likeComment, removeLikeComment } = useContext(ContentContext);
   const [like, setLike] = useState(false);
   const [showInput, setShowInput] = useState(false);
@@ -38,7 +38,7 @@ function Comment({ comment, postId, getComments }) {
     
     var requestOptions = { method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow" };
     try {
-      const response = await fetch("http://localhost:5000/api/comments/update", requestOptions);
+      const response = await fetch(`${server}/api/comments/update`, requestOptions);
       await response.json();
       getComments(postId);
     } catch (error) {
@@ -63,7 +63,7 @@ function Comment({ comment, postId, getComments }) {
 
     var requestOptions = { method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow" };
     try {
-      const response = await fetch("http://localhost:5000/api/comments/delete", requestOptions);
+      const response = await fetch(`${server}/api/comments/delete`, requestOptions);
       await response.json();
       alert("Comment successfully deleted!");
       getComments(postId);

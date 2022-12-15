@@ -9,7 +9,7 @@ import FabGroup from '../components/FabGroup';
 
 function City() {
 
-  const { user, checkIfUserIsLoggedIn } = useContext(AuthContext);
+  const { user, checkIfUserIsLoggedIn, server } = useContext(AuthContext);
   const [posts, setPosts] = useState([]);
 
   const actions = [
@@ -21,7 +21,7 @@ function City() {
 
   const getPosts = async (url) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/posts/${url}`);
+      const response = await fetch(`${server}/api/posts/${url}`);
       const result = await response.json();
       setPosts(result);
     } catch (error) {

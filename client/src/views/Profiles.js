@@ -12,12 +12,12 @@ function Profiles() {
 
   const [profile, setProfile] = useState({});
   const [loading, setLoading] = useState(true);
-  const { user, checkIfUserIsLoggedIn } = useContext(AuthContext);
+  const { user, checkIfUserIsLoggedIn, server } = useContext(AuthContext);
   const { id } = useParams();
 
   const getProfile = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/users/user?_id=${id}`);
+      const response = await fetch(`${server}/api/users/user?_id=${id}`);
       const result = await response.json();
       setProfile(result);
       setLoading(false);

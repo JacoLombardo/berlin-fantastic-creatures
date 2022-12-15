@@ -7,7 +7,7 @@ import { AuthContext } from '../context/AuthContext';
 
 function Register() {
 
-    const { checkIfUserIsLoggedIn } = useContext(AuthContext);
+    const { checkIfUserIsLoggedIn, server } = useContext(AuthContext);
     const [previewFile, setPreviewFile] = useState(null);
     const [imgDataURL, setImgDataURL] = useState(null);
     const [errors, setErrors] = useState(null);
@@ -63,7 +63,7 @@ function Register() {
         
         const requestOptions = { method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow" };
         try {
-            const response = await fetch("http://localhost:5000/api/users/register", requestOptions);
+            const response = await fetch(`${server}/api/users/register`, requestOptions);
             const result = await response.json();
             if (result.errors) {
                 setErrors(result.errors);
@@ -82,7 +82,7 @@ function Register() {
 
         const requestOptions = { method: "POST", body: formdata, redirect: "follow" };
         try {
-            const response = await fetch("http://localhost:5000/api/users/imageupload", requestOptions);
+            const response = await fetch(`${server}/api/users/imageupload`, requestOptions);
             const result = await response.json();
             register(result.image, result.img_id);
         } catch (error) {
