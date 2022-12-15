@@ -57,9 +57,9 @@ const mongoDBConnection = async () => {
   }
 };
 
-(async function controller() {
-  await mongoDBConnection();
+// (async function controller() {
+   mongoDBConnection();
   addMiddleWares();
   loadRoutes();
   startServer();
-})();
+// })();
