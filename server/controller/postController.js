@@ -238,7 +238,6 @@ const imageUploadPosts = async (req, res) => {
     const result = await cloudinary.uploader.upload(req.file.path, {
       folder: "berlin-fantastic-creatures/posts",
     });
-    console.log("result >>>>", result);
     res.status(200).json({
       msg: "Image successfully uploaded",
       image: result.url,
