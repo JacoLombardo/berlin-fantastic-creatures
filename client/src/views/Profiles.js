@@ -67,7 +67,7 @@ function Profiles() {
               <img src={favourite} alt="favourites" className="profileMetaIcon" />
               <h1 className="infoH">Their favourites:</h1>
             </div>
-            <Favourites userId={id} />
+            <Favourites profile={profile} />
           </div>
         </div>
         </div>

@@ -2,10 +2,10 @@ import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import Favourite from './Favourite';
 
-function Favourites() {
+function Favourites({profile, user}) {
 
   const [favourites, setFavourites] = useState(null);
-  const { user, server } = useContext(AuthContext);
+  const { server } = useContext(AuthContext);
 
   const getFavourites = async (myFav) => {
     try {
@@ -25,8 +25,10 @@ function Favourites() {
   useEffect(() => {
     if (user.favourites) {
       getFavourites(user.favourites);
+    } else if (profile.favourites) {
+      getFavourites(profile.favourites);
     }
-  }, [user]);
+  }, [user, profile]);
 
   return (
       <>
