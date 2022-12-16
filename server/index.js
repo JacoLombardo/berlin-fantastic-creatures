@@ -14,11 +14,7 @@ import passportGoogleConfig from './config/passportGoggle.js';
 dotenv.config();
 
 const app = express();
-const corsOptions = {
-    // origin: "http://localhost:3000",
-    origin: "https://berlin-fantastic-creatures.vercel.app",
-  };
-app.use(cors(corsOptions));
+
 const port = process.env.PORT || 5000;
 
 const addMiddleWares = () => {
@@ -28,8 +24,11 @@ const addMiddleWares = () => {
       extended: true,
     })
   );
-
-  
+  const corsOptions = {
+    // origin: "http://localhost:3000",
+    origin: "https://berlin-fantastic-creatures.vercel.app",
+  };
+  app.use(cors(corsOptions));
   cloudinaryConfig();
   app.use(passport.initialize());
   passportConfig(passport);
