@@ -26,7 +26,6 @@ const addMiddleWares = () => {
   const corsOptions = {
     // origin: "http://localhost:3000",
     origin: "http://berlin-fantastic-creatures.vercel.app",
-    credentials: true,
   };
   app.use(cors(corsOptions));
   cloudinaryConfig();
