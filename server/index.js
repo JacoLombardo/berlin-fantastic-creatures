@@ -16,7 +16,7 @@ dotenv.config();
 const app = express();
 const corsOptions = {
     // origin: "http://localhost:3000",
-    origin: "http://berlin-fantastic-creatures.vercel.app",
+    origin: "https://berlin-fantastic-creatures.vercel.app",
   };
 app.use(cors(corsOptions));
 const port = process.env.PORT || 5000;
