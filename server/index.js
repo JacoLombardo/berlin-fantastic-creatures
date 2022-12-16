@@ -25,7 +25,6 @@ const addMiddleWares = () => {
     })
   );
   const corsOptions = {
-    // origin: "http://localhost:3000",
     origin: "https://berlin-fantastic-creatures.vercel.app",
   };
   app.use(cors(corsOptions));
