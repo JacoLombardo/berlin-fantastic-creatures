@@ -172,7 +172,7 @@ function Post({ post, getPosts, category }) {
         <div className="postHeader">
           {post.author ? <img src={post.author.profilePic} alt="userpic" className="postUserPic"></img> : <img src={userPic} alt="userpic" className="postUserPic"></img>}
           <div>
-            {post.author && user && <div className="postUsernameAction">
+            {post.author && <div className="postUsernameAction">
               <Link to={`user-${post.author._id}`} className="link"><h1 className="postUsername">{post.author.username}</h1></Link>
               {user && post.author.username === user.username && 
               <div className="actionIconsDiv">
