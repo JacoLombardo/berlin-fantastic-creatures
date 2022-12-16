@@ -33,7 +33,7 @@ function Favourites({profile, user}) {
   return (
       <>
         <div className="personalPostsDiv">
-        {favourites && user.favourites.length > 0 ?
+        {favourites && favourites.length > 0 ?
           favourites.map((favourite, index) => {
             return <Favourite key={index} favourite={favourite} />
           })
