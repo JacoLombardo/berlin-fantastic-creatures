@@ -24,7 +24,8 @@ const addMiddleWares = () => {
     })
   );
   const corsOptions = {
-    origin: "http://localhost:3000",
+    // origin: "http://localhost:3000",
+    origin: "http://berlin-fantastic-creatures-server.vercel.app",
     credentials: true,
   };
   app.use(cors(corsOptions));
@@ -42,14 +43,6 @@ const startServer = () => {
 };
 
 const loadRoutes = () => {
-  app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "http://berlin-fantastic-creatures-server.vercel.app");
-    res.header(
-      "Access-Control-Allow-Headers",
-      "Origin, X-Requested-With, Content-Type, Accept"
-    );
-    next();
-  });
   app.use("/api", router);
   app.use("/api/users", userRoute);
   app.use("/api/posts", postRoute);

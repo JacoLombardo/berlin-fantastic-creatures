@@ -16,7 +16,7 @@ function NavBar() {
       <Navbar expand="lg" className="NavBar" style={{backgroundColor: "#EDF5E1"}}>
         <Container>
           <Navbar.Brand as={Link} to="/"><img className="logoNav" src={Logo} alt="logo" /></Navbar.Brand>
-          <Navbar.Brand as={Link} to="/">Berlin Fantastic Creatures</Navbar.Brand>
+          <Navbar.Brand as={Link} to="/" className="NavbarBrand">Berlin Fantastic Creatures</Navbar.Brand>
           <NavDropdown title="Menu" id="basic-nav-dropdown">
             {isUser ? <NavDropdown.Item as={Link} to="/profile">My Profile</NavDropdown.Item>
               : <NavDropdown.Item as={Link} to="/register">Register</NavDropdown.Item>}

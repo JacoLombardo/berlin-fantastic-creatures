@@ -1,5 +1,22 @@
 /* General */
 
+@media screen and (min-width: 1000px) {
+    .test span {
+        left: 740px;
+        right: 760px;
+    }
+    .homeTextBottom {
+        top: 400px;
+    }
+}
+
+@media (max-width: 1000px) and (min-width: 800px) {
+    .test span {
+        left: 480px;
+        right: 450px;
+    }
+}
+
 @media screen and (min-width: 800px) {
     .containerDiv {
         max-width: 500px;
@@ -15,6 +32,20 @@
     }
     .commentDate {
         font-size: 14px;
+    }
+    .homeTextTop{
+        top: 150px;
+        right: 190px;
+        left: 180px;
+    }
+    .homeTextTop2{
+        top: 120px;
+        right: 190px;
+        left: 180px;
+    }
+    .homeTextBottom {
+        right: 200px;
+        left: 200px;
     }
 }
 
@@ -34,6 +65,28 @@
         font-size: 12px;
         margin-left: 10px;
     }
+    .test span {
+        left: 180px;
+        right: 150px;
+        top: 70px;
+    }
+    .homeTextTop{
+        top: 170px;
+        right: 160px;
+        left: 150px;
+    }
+    
+    .homeTextTop2{
+        top: 140px;
+        right: 180px;
+        left: 175px;
+    }
+    .homeTextBottom {
+        right: 40px;
+        left: 40px;
+        top: 350px;
+        width: 300px;
+}
 }
 
 
@@ -76,6 +129,10 @@
     width: 40px;
 }
 
+.NavbarBrand{
+    font: 20px Monaco, MonoSpace;
+}
+
 div.dropdown-menu.show {
     background-color: #DEF5E5;
 }
@@ -84,6 +141,116 @@ div.dropdown-menu.show {
 
 .homePic{
     width: 100%;
+}
+
+.homeTextTop{
+    text-align: center;
+    font: 20px Monaco, MonoSpace;
+    font-weight: bolder;
+    position: absolute;
+}
+
+.homeTextTop2{
+    text-align: center;
+    font: 20px Monaco, MonoSpace;
+    font-weight: bolder;
+    position: absolute;
+}
+
+.homeTextBottom {
+    color: white;
+    text-align: center;
+    font-weight: bolder;
+    position: absolute;
+}
+
+.test span {
+    font: 26px Monaco, MonoSpace;
+    font-weight: bolder;
+    text-shadow: 1px 1px 2px white, 0 0 1em #8DE4AF, 0 0 0.2em #389583;
+    height: 200px;
+    position: absolute;
+    width: 20px;
+    top: 70px;
+    transform-origin: bottom center;
+}
+.char1 {
+    transform: rotate(-48deg);
+}
+.char2 {
+    transform: rotate(-44deg);
+}
+.char3 {
+    transform: rotate(-40deg);
+}
+.char4 {
+    transform: rotate(-36deg);
+}
+.char5 {
+    transform: rotate(-32deg);
+}
+.char6 {
+    transform: rotate(-28deg);
+}
+.char7 {
+    transform: rotate(-24deg);
+}
+.char8 {
+    transform: rotate(-20deg);
+}
+.char9 {
+    transform: rotate(-16deg);
+}
+.char10 {
+    transform: rotate(-12deg);
+}
+.char11 {
+    transform: rotate(-8deg);
+}
+.char12 {
+    transform: rotate(-4deg);
+}
+.char13 {
+    transform: rotate(0deg);
+}
+.char14 {
+    transform: rotate(4deg);
+}
+.char15 {
+    transform: rotate(8deg);
+}
+.char16 {
+    transform: rotate(12deg);
+}
+.char17 {
+    transform: rotate(16deg);
+}
+.char18 {
+    transform: rotate(20deg);
+}
+.char19 {
+    transform: rotate(24deg);
+}
+.char20 {
+    transform: rotate(28deg);
+}
+.char21 {
+    transform: rotate(32deg);
+}
+.char22 {
+    transform: rotate(36deg);
+}
+.char23 {
+    transform: rotate(40deg);
+}
+.char24 {
+    transform: rotate(44deg);
+}
+.char25 {
+    transform: rotate(48deg);
+}
+.char26 {
+    transform: rotate(52deg);
 }
 
 /* Forms */

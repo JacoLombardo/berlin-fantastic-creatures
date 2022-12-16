@@ -21,7 +21,7 @@ function City() {
 
   const getPosts = async (url) => {
     try {
-      const response = await fetch(`${server}/api/posts/${url}`);
+      const response = await fetch(`https://cab-cors-anywhere.herokuapp.com/${server}/api/posts/${url}`);
       const result = await response.json();
       setPosts(result);
     } catch (error) {
