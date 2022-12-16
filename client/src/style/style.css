@@ -4,6 +4,7 @@
     .test span {
         left: 740px;
         right: 760px;
+        top: 70px;
     }
     .homeTextBottom {
         top: 400px;
@@ -14,6 +15,7 @@
     .test span {
         left: 480px;
         right: 450px;
+        top: 70px;
     }
 }
 
@@ -68,16 +70,16 @@
     .test span {
         left: 180px;
         right: 150px;
-        top: 70px;
+        top: 90px;
     }
     .homeTextTop{
-        top: 170px;
+        top: 190px;
         right: 160px;
         left: 150px;
     }
     
     .homeTextTop2{
-        top: 140px;
+        top: 160px;
         right: 180px;
         left: 175px;
     }
@@ -86,7 +88,7 @@
         left: 40px;
         top: 350px;
         width: 300px;
-}
+    }
 }
 
 
@@ -131,6 +133,9 @@
 
 .NavbarBrand{
     font: 20px Monaco, MonoSpace;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 div.dropdown-menu.show {
@@ -171,7 +176,7 @@ div.dropdown-menu.show {
     height: 200px;
     position: absolute;
     width: 20px;
-    top: 70px;
+    
     transform-origin: bottom center;
 }
 .char1 {
