@@ -13,12 +13,12 @@ const postSchema = new Schema({
     },
     text: {
         type: String,
-        required: true,
+        required: false,
         unique: false
     },
     img: {
         type: String,
-        required: true,
+        required: false,
         unique: false
     },
     img_id: {
