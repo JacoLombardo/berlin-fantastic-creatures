@@ -17,7 +17,6 @@ export const AuthContextProvider = (props) => {
   const email = useRef();
   const password = useRef();
   const redirectTo = useNavigate();
-  // const server = "http://localhost:5000";
   const server = "http://berlin-fantastic-creatures-server.vercel.app";
 
   const login = async () => {
@@ -72,6 +71,7 @@ export const AuthContextProvider = (props) => {
       setUser(result.user);
     } catch (error) {
       console.log("Error getting profile", error);
+      logout();
     }
   };
 
