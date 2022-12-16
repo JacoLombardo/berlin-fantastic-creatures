@@ -12,7 +12,7 @@ function FabGroupHome() {
                 <Link to="/city"><img src={City} alt="city" title="City" style={{ width: "70px", marginBottom: "15px" }} /></Link>
             </div>
             <div className="fab-button-home">
-                <Link to="/city"><img src={Ubahn} alt="ubahn" title="Ubahn" style={{ width: "70px" }} /></Link>
+                <Link to="/ubahn"><img src={Ubahn} alt="ubahn" title="Ubahn" style={{ width: "70px" }} /></Link>
             </div>
         </div>
   );
