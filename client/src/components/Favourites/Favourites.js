@@ -23,9 +23,9 @@ function Favourites({profile, user}) {
   };
 
   useEffect(() => {
-    if (user.favourites) {
+    if (user) {
       getFavourites(user.favourites);
-    } else if (profile.favourites) {
+    } else if (profile) {
       getFavourites(profile.favourites);
     }
   }, [user, profile]);
