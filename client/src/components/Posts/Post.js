@@ -46,8 +46,7 @@ function Post({ post, getPosts, category }) {
     }
   };
 
-  const submitEdit = (event) => {
-    event.preventDefault();
+  const submitEdit = () => {
     if (imgDataURL) {
       uploadPicture();
     } else {
