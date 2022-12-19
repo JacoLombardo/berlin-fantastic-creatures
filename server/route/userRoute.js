@@ -14,7 +14,7 @@ const validation = [
     body('lastName').not().isEmpty().withMessage('Last name is required'),
     body('email').not().isEmpty().withMessage('Email is required'),
     body('email').isEmail().withMessage('Invalid email format'),
-    body('password').isLength({ min: 6, max: 10 }).withMessage('Invalid password'),
+    body('password').isLength({ min: 6, max: 12 }).withMessage('Invalid password'),
     body('password').custom((val, { req }) => {
         if (val !== req.body.password_confirmation) { throw new Error("Passwords don't match");
         } else { return req.body.password }}),
