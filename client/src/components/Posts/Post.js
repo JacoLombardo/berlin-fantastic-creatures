@@ -98,16 +98,26 @@ function Post({ post, getPosts, category }) {
   };
 
   const submitLikePost = () => {
-    likePost(post._id, user._id);
-    getPosts(category);
+    if (user) {
+      setLike(true);
+      likePost(post._id, user._id);
+      getPosts(category);
+    } else {
+      alert("You need to log in to like");
+    };
   };
   const submitRemoveLike = () => {
     removeLike(post._id, user._id);
     getPosts(category);
   };
   const submitAddToFavourites = () => {
-    addToFavourites(post._id, user._id);
-    getPosts(category);
+    if (user) {
+      setFav(true);
+      addToFavourites(post._id, user._id);
+      getPosts(category);
+    } else {
+      alert("You need to log in to add to favourites");
+    };
   };
   const submitRemoveFromFavourites = () => {
     removeFromFavourites(post._id, user._id);
@@ -194,12 +204,12 @@ function Post({ post, getPosts, category }) {
         {!imgDataURL ? <img src={post.img} alt="post-img" className="imgPreview"></img> : <img src={imgDataURL} alt="post-pic" className="imgPreview" />}
         <div className="likesDiv">
           <div className="likesDiv">
-            {!like ? <Link onClick={() => { submitLikePost(); setLike(true) }}><img src={Like} alt="like" title="Like the post!" className="metaIcon" /></Link>
+            {!like ? <Link onClick={submitLikePost}><img src={Like} alt="like" title="Like the post!" className="metaIcon" /></Link>
             :
             <Link onClick={() => { submitRemoveLike(); setLike(false) }}><img src={Liked} alt="liked" title="Remove the like!" className="metaIcon" /></Link>}
             {post.likes && <p>{post.likes.length} Likes</p>}
           </div>
-          {!fav ? <Link onClick={() => { submitAddToFavourites(); setFav(true) }}><img src={Favourite} alt="favourite" title="Add the post to your favourites!" className="metaIcon" /></Link>
+          {!fav ? <Link onClick={submitAddToFavourites}><img src={Favourite} alt="favourite" title="Add the post to your favourites!" className="metaIcon" /></Link>
             :
             <Link onClick={() => { submitRemoveFromFavourites(); setFav(false) }}><img src={Favourited} alt="favourited" title="Remove post from your favourites!" className="metaIcon" /></Link>}
         </div>

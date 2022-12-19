@@ -73,8 +73,13 @@ function Comment({ comment, postId, getComments }) {
   };
 
   const submitLikeComment = () => {
-    likeComment(comment._id, user._id);
-    getComments(postId);
+    if (user) {
+      setLike(true);
+      likeComment(comment._id, user._id);
+      getComments(postId);
+    } else {
+      alert("You need to log in to like")
+    };    
   };
   const submitRemoveLikeComment = () => {
     removeLikeComment(comment._id, user._id);
@@ -108,7 +113,7 @@ function Comment({ comment, postId, getComments }) {
           {!showInput ? <p>{comment.text}</p> :
             <textarea className="commentInput" type="text" name="comment-text" ref={text} onKeyUp={onKeyUp} defaultValue={comment.text} />}
           <div className="likesDivComment">
-            {!like ? <Link onClick={() => { submitLikeComment(); setLike(true) }}><img src={Like} alt="like" title="Like the comment!" className="metaIconComment" /></Link>
+            {!like ? <Link onClick={submitLikeComment}><img src={Like} alt="like" title="Like the comment!" className="metaIconComment" /></Link>
             :
               <Link onClick={() => { submitRemoveLikeComment(); setLike(false) }}><img src={Liked} alt="liked" title="Remove the like!" className="metaIconComment" /></Link>}
             {comment.likes && <p>{comment.likes.length} Likes</p>}
