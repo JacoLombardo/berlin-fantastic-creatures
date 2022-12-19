@@ -34,16 +34,6 @@ function Register() {
             }
         }
     };
-    
-    
-    // const handleSubmit = (event) => {
-    //     event.preventDefault();
-    //     if (imgDataURL) {
-    //         uploadPicture();
-    //     } else {
-    //         register();
-    //     };
-    // };
 
     const register = async () => {
         var myHeaders = new Headers();
@@ -72,20 +62,6 @@ function Register() {
         };
     };
 
-    // const uploadPicture = async () => {
-    //     var formdata = new FormData();
-    //     formdata.append("image", previewFile);
-
-    //     const requestOptions = { method: "POST", body: formdata, redirect: "follow" };
-    //     try {
-    //         const response = await fetch(`${server}/api/users/imageupload`, requestOptions);
-    //         const result = await response.json();
-    //         register(result.image, result.img_id);
-    //     } catch (error) {
-    //         console.log("error :>> ", error);
-    //     };
-    // };
-
     useEffect(() => {
         filterErrors();
     }, [errors]);
@@ -94,26 +70,6 @@ function Register() {
         checkIfUserIsLoggedIn();
     }, []);
     
-    // useEffect(() => {
-    //     let fileReader, isCancel = false;
-    //     if (previewFile) {
-    //         fileReader = new FileReader();
-    //         fileReader.onload = (event) => {
-    //             const { result } = event.target;
-    //             if (result && !isCancel) {
-    //                 setImgDataURL(result)
-    //             }
-    //         }
-    //         fileReader.readAsDataURL(previewFile);
-    //     }
-    //     return () => {
-    //         isCancel = true;
-    //         if (fileReader && fileReader.readyState === 1) {
-    //             fileReader.abort();
-    //         }
-    //     }
-    // }, [previewFile]);
-
   return (
       <>
           <NavBar />
