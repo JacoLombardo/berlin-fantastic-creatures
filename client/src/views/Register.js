@@ -8,8 +8,6 @@ import { AuthContext } from '../context/AuthContext';
 function Register() {
 
     const { checkIfUserIsLoggedIn, server } = useContext(AuthContext);
-    const [previewFile, setPreviewFile] = useState(null);
-    const [imgDataURL, setImgDataURL] = useState(null);
     const [errors, setErrors] = useState(null);
     const [filteredErrors, setFilteredErrors] = useState(null);
     const redirectTo = useNavigate();
@@ -38,16 +36,16 @@ function Register() {
     };
     
     
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        if (imgDataURL) {
-            uploadPicture();
-        } else {
-            register();
-        };
-    };
+    // const handleSubmit = (event) => {
+    //     event.preventDefault();
+    //     if (imgDataURL) {
+    //         uploadPicture();
+    //     } else {
+    //         register();
+    //     };
+    // };
 
-    const register = async (profileImg, img_id) => {
+    const register = async () => {
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
         
@@ -58,8 +56,6 @@ function Register() {
         urlencoded.append("email", email.current.value);
         urlencoded.append("password", password.current.value);
         urlencoded.append("password_confirmation", confirmationPassword.current.value);
-        urlencoded.append("profilePic", profileImg ? profileImg : "");
-        urlencoded.append("img_id", img_id ? img_id : "");
         
         const requestOptions = { method: "POST", headers: myHeaders, body: urlencoded, redirect: "follow" };
         try {
@@ -76,19 +72,19 @@ function Register() {
         };
     };
 
-    const uploadPicture = async () => {
-        var formdata = new FormData();
-        formdata.append("image", previewFile);
+    // const uploadPicture = async () => {
+    //     var formdata = new FormData();
+    //     formdata.append("image", previewFile);
 
-        const requestOptions = { method: "POST", body: formdata, redirect: "follow" };
-        try {
-            const response = await fetch(`${server}/api/users/imageupload`, requestOptions);
-            const result = await response.json();
-            register(result.image, result.img_id);
-        } catch (error) {
-            console.log("error :>> ", error);
-        };
-    };
+    //     const requestOptions = { method: "POST", body: formdata, redirect: "follow" };
+    //     try {
+    //         const response = await fetch(`${server}/api/users/imageupload`, requestOptions);
+    //         const result = await response.json();
+    //         register(result.image, result.img_id);
+    //     } catch (error) {
+    //         console.log("error :>> ", error);
+    //     };
+    // };
 
     useEffect(() => {
         filterErrors();
@@ -98,25 +94,25 @@ function Register() {
         checkIfUserIsLoggedIn();
     }, []);
     
-    useEffect(() => {
-        let fileReader, isCancel = false;
-        if (previewFile) {
-            fileReader = new FileReader();
-            fileReader.onload = (event) => {
-                const { result } = event.target;
-                if (result && !isCancel) {
-                    setImgDataURL(result)
-                }
-            }
-            fileReader.readAsDataURL(previewFile);
-        }
-        return () => {
-            isCancel = true;
-            if (fileReader && fileReader.readyState === 1) {
-                fileReader.abort();
-            }
-        }
-    }, [previewFile]);
+    // useEffect(() => {
+    //     let fileReader, isCancel = false;
+    //     if (previewFile) {
+    //         fileReader = new FileReader();
+    //         fileReader.onload = (event) => {
+    //             const { result } = event.target;
+    //             if (result && !isCancel) {
+    //                 setImgDataURL(result)
+    //             }
+    //         }
+    //         fileReader.readAsDataURL(previewFile);
+    //     }
+    //     return () => {
+    //         isCancel = true;
+    //         if (fileReader && fileReader.readyState === 1) {
+    //             fileReader.abort();
+    //         }
+    //     }
+    // }, [previewFile]);
 
   return (
       <>
@@ -126,7 +122,7 @@ function Register() {
               <br />
               <h1 style={{ textAlign: "center" }}>Register</h1>
               
-              <Form noValidate onSubmit={handleSubmit} style={{padding: "20px"}}>
+              <Form noValidate onSubmit={(event) => { event.preventDefault(); register() }} style={{padding: "20px"}}>
                   <div className="formFlex">
                       <Form.Group className="mb-3" controlId="formBasicUsername">
                           <Form.Label>Username</Form.Label>
@@ -175,7 +171,7 @@ function Register() {
                           <Form.Control type="password" placeholder="Enter password" name="password" ref={password} />
                           {errors && errors.map((error, key) => {
                               if (error.msg === "Invalid password") {
-                                  return <p key={key} className="errorMessage">{error.msg}</p>
+                                  return <div key={key}><p className="errorMessage">{error.msg}</p><p className="passwordTips">Passwords should be between 6 and 12 characters.</p></div>
                               } else if (error.msg === "Passwords don't match") {
                                   return <p key={key} className="errorMessage">{error.msg}</p>
                               };
@@ -185,11 +181,6 @@ function Register() {
                           <Form.Label>Password confirmation</Form.Label>
                           <Form.Control type="password" placeholder="Confirm password" ref={confirmationPassword} />
                       </Form.Group>
-                      <Form.Group className="mb-3" controlId="formBasicFile">
-                          <Form.Label>Profile picture (optional)</Form.Label>
-                          <Form.Control type="file" accept="image/*" name="profilePic" onChange={(event) => {setPreviewFile(event.target.files[0])}} />
-                      </Form.Group>
-                      {imgDataURL && <img src={imgDataURL} alt="img-preview" className="imgRegisterPreview" />}
                   </div>
                   <Form.Group className="mb-3" controlId="formBasicCheckbox">
                       <Form.Check type="checkbox" label="Check me out" required />

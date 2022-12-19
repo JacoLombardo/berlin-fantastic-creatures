@@ -291,6 +291,12 @@ div.dropdown-menu.show {
     font-weight: 500;
 }
 
+.passwordTips{
+    font-style: italic;
+    font-size: small;
+    max-width: 230px;
+}
+
 /* Comment */
 
 .commentDiv{

@@ -30,7 +30,7 @@ const getUserById = async (req, res) => {
 
 const registerUser = async (req, res) => {
 
-    const { firstName, lastName, username, email, password, profilePic, img_id } = req.body;
+    const { firstName, lastName, username, email, password } = req.body;
 
     try {
         const errors = validationResult(req).array();
@@ -56,8 +56,7 @@ const registerUser = async (req, res) => {
             username: username,
             email: email,
             password: hashedPassword,
-            profilePic: profilePic ? profilePic : blankPic,
-            img_id: img_id,
+            profilePic: blankPic,
         });
         try {
             const savedUser = await newUser.save();

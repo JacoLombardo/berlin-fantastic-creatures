@@ -96,7 +96,9 @@ function PersonalProfile() {
     try {
       const response = await fetch(`${server}/api/users/imageupload`, requestOptions);
       const result = await response.json();
-      deleteImage(user.img_id);
+      if (user.img_id) {
+        deleteImage(user.img_id);
+      };
       submitChange(result.image, result.img_id);
     } catch (error) {
       console.log("error :>> ", error);
