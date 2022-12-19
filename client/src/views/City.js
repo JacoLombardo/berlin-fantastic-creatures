@@ -6,11 +6,13 @@ import { AuthContext } from '../context/AuthContext';
 import Ubahn from '../Images/logo/ubahn.png';
 import HomeIcon from '../Images/logo/home.png';
 import FabGroup from '../components/FabGroup';
+import Logo from '../components/Logo/Logo';
 
 function City() {
 
   const { user, checkIfUserIsLoggedIn, server } = useContext(AuthContext);
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const actions = [
     { label: "Home", icon: <img src={HomeIcon} alt="home" title="Home" style={{ width: "40px" }} />, onClick: "/" },
@@ -24,6 +26,7 @@ function City() {
       const response = await fetch(`${server}/api/posts/${url}`);
       const result = await response.json();
       setPosts(result);
+      setLoading(false);
     } catch (error) {
       console.log("error :>> ", error);
     };
@@ -39,12 +42,15 @@ function City() {
       <NavBar />
       <FabGroup actions={actions} />
       <br />
-      <div className="contentDiv">
-        <h1 className="contentTitle">You walk around the city, does something catch your attention?</h1>
-        <hr className="hr3"></hr>
-        {user && <Share city={city} getPosts={getPosts} />}
-        <Posts city={city} posts={posts} getPosts={getPosts} />
-      </div>
+      {loading ?
+        <Logo />
+        :
+        <div className="contentDiv">
+          <h1 className="contentTitle">You walk around the city, does something catch your attention?</h1>
+          <hr className="hr3"></hr>
+          {user && <Share city={city} getPosts={getPosts} />}
+          <Posts city={city} posts={posts} getPosts={getPosts} />
+        </div>}
     </>
   )
 }

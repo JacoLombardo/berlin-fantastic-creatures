@@ -7,11 +7,13 @@ import '../style/content.style.css';
 import City from '../Images/logo/favicon.png';
 import HomeIcon from '../Images/logo/home.png';
 import FabGroup from '../components/FabGroup';
+import Logo from '../components/Logo/Logo';
 
 function Ubahn() {
 
   const { user, checkIfUserIsLoggedIn, server } = useContext(AuthContext);
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const actions = [
     { label: "Home", icon: <img src={HomeIcon} alt="home" title="Home" style={{ width: "40px" }} />, onClick: "/" },
@@ -25,6 +27,7 @@ function Ubahn() {
       const response = await fetch(`${server}/api/posts/${url}`);
       const result = await response.json();
       setPosts(result);
+      setLoading(false);
     } catch (error) {
       console.log("error :>> ", error);
     };
@@ -40,12 +43,15 @@ function Ubahn() {
       <NavBar />
       <FabGroup actions={actions} />
       <br />
+      {loading ?
+        <Logo />
+        :
         <div className="contentDiv">
-        <h1 className="contentTitle">You enter the U-Bahn, what do you see?</h1>
-        <hr className="hr3"></hr>
-        {user && <Share ubahn={ubahn} getPosts={getPosts} />}
-        <Posts ubahn={ubahn} posts={posts} getPosts={getPosts} />
-      </div>
+          <h1 className="contentTitle">You enter the U-Bahn, what do you see?</h1>
+          <hr className="hr3"></hr>
+          {user && <Share ubahn={ubahn} getPosts={getPosts} />}
+          <Posts ubahn={ubahn} posts={posts} getPosts={getPosts} />
+        </div>}
     </>
   )
 }
