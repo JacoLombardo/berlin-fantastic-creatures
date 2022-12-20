@@ -26,12 +26,8 @@ const FabGroup = ({ actions }) => {
           style={{ transitionDelay: `${index * 25}ms` }}
           className={cn("fab-action", { open })}
           key={action.label}
-          onClick={() => {
-            redirectTo(action.onClick);
-          }}
-        >
-          {action.icon}
-        </li>
+          onClick={() => { redirectTo(action.onClick); }}
+        >{action.icon}</li>
       ))}
     </ul>
   );

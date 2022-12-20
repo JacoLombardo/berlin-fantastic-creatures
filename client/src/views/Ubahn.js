@@ -8,12 +8,14 @@ import City from '../Images/logo/favicon.png';
 import HomeIcon from '../Images/logo/home.png';
 import FabGroup from '../components/FabGroup';
 import Logo from '../components/Logo/Logo';
+import FabScrollUp from '../components/FabScrollUp';
 
 function Ubahn() {
 
   const { user, checkIfUserIsLoggedIn, server } = useContext(AuthContext);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showScrollUp, setShowScrollUp] = useState(false);
 
   const actions = [
     { label: "Home", icon: <img src={HomeIcon} alt="home" title="Home" style={{ width: "40px" }} />, onClick: "/" },
@@ -34,6 +36,16 @@ function Ubahn() {
   };
 
   useEffect(() => {
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 500) {
+        setShowScrollUp(true);
+      } else {
+        setShowScrollUp(false);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
     getPosts(ubahn);
     checkIfUserIsLoggedIn();
   }, []);
@@ -41,6 +53,7 @@ function Ubahn() {
   return (
     <>
       <NavBar />
+      {showScrollUp && <FabScrollUp />}
       <FabGroup actions={actions} />
       <br />
       {loading ?

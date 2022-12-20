@@ -89,3 +89,16 @@
 .fab-button-home :hover{
     transform: scale(1.5);
 }
+
+/* Fab Scroll Up */
+
+.fab-button-scroll {
+    background-color: #EDF5E1;
+    border-radius: 50%;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    right: 3em;
+    box-shadow: 0 3px 6px lightgrey;
+    cursor: pointer;
+}
