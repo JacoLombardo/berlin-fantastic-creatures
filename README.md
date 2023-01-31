@@ -4,7 +4,7 @@
 
 <h2>Composition</h2>
   <p>The site is composed of:
-  <li>Homepage, main page with a small presentation of the site and the navigation;</li>
+  <li>Homepage, landing page with a small presentation of the site and the navigation;</li>
     <li> City, content page focused on "City" theme;</li>
     <li> UBahn, content page focused on "Ubahn" theme;</li>
     <li> Users profiles, with personal information, bio, favourited and published posts;</li>
