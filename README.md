@@ -5,10 +5,10 @@
 <h2>Composition</h2>
   <p>The site is composed of:</p>
   <li>Homepage, landing page with a small presentation of the site and the navigation;</li>
-    <li> City, content page focused on "City" theme;</li>
-    <li> UBahn, content page focused on "Ubahn" theme;</li>
-    <li> Users profiles, with personal information, bio, favourited and published posts;</li>
-    <li> (If the user is logged in) Personal profile, with the same elements of the user profile, but with the possibility to change the data.</li>
+  <li> City, content page focused on "City" theme;</li>
+  <li> UBahn, content page focused on "Ubahn" theme;</li>
+  <li> Users profiles, with personal information, bio, favourited and published posts;</li>
+  <li> (If the user is logged in) Personal profile, with the same elements of the user profile, but with the possibility to change the data.</li>
     
   <h2>Features</h2>
   <p>A not registered user is able to navigate throughout the site and visit the users profiles.</p>
