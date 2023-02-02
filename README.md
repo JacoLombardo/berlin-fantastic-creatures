@@ -3,12 +3,12 @@
   <p>Social Network App using the MERN (MongoDB, Express, React, Node) Stack. The Back-End interacts with a React Front-End thought APIs providing the app with key features such as posts, comments, likes and favourites, while ensuring the security of the exchanges using web tokens and access management rules (CRUD).<p>
 
 <h2>Composition</h2>
-  <p>The site is composed of:
+  <p>The site is composed of:</p>
   <li>Homepage, landing page with a small presentation of the site and the navigation;</li>
     <li> City, content page focused on "City" theme;</li>
     <li> UBahn, content page focused on "Ubahn" theme;</li>
     <li> Users profiles, with personal information, bio, favourited and published posts;</li>
-    <li> (If the user is logged in) Personal profile, with the same elements of the user profile, but with the possibility to change the data.</li></p>
+    <li> (If the user is logged in) Personal profile, with the same elements of the user profile, but with the possibility to change the data.</li>
     
   <h2>Features</h2>
   <p>A not registered user is able to navigate throughout the site and visit the users profiles.</p>
