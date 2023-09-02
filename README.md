@@ -1,6 +1,6 @@
 <h1>Berlin Fantastic Creatures</h1>
 
-  <p>Social Network App using the MERN (MongoDB, Express, React, Node) Stack. The Back-End interacts with a React Front-End thought APIs providing the app with key features such as posts, comments, likes and favourites, while ensuring the security of the exchanges using web tokens and access management rules (CRUD).<p>
+  <p>Social Network App developed using the MERN (MongoDB, Express, React, Node) Stack. The Back-End interacts with a React Front-End thought APIs providing the app with key features such as posts, comments, likes and favourites, while ensuring the security of the exchanges using web tokens and access management rules (CRUD).<p>
 
 <h2>Composition</h2>
   <p>The site is composed of:</p>
